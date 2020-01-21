@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next-my.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="智能车自制PCB是一件非常有成就感的事情。但是这其中所包含的知识真的很多，记得19年上半年我磨了一个月才真正意义上的画出了可以用的板子（也仅仅只是可以用而已）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="智能车硬件——PCB（一）">
+<meta property="og:url" content="http://yoursite.com/2020/01/21/1.2%E6%99%BA%E8%83%BD%E8%BD%A6PCB%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
+<meta property="og:site_name" content="Just do it">
+<meta property="og:description" content="智能车自制PCB是一件非常有成就感的事情。但是这其中所包含的知识真的很多，记得19年上半年我磨了一个月才真正意义上的画出了可以用的板子（也仅仅只是可以用而已）。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-01-21T09:32:51.761Z">
+<meta property="article:modified_time" content="2020-01-21T09:37:25.442Z">
+<meta property="article:author" content="KZB">
+<meta property="article:tag" content="智能车">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/01/21/1.2%E6%99%BA%E8%83%BD%E8%BD%A6PCB%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>智能车硬件——PCB（一） | Just do it</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just do it</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home#首页"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags#标签"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th#分类"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive#归档"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/21/1.2%E6%99%BA%E8%83%BD%E8%BD%A6PCB%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KZB">
+      <meta itemprop="description" content="吉良吉影想过平静的生活">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just do it">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          智能车硬件——PCB（一）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-01-21 17:32:51 / Modified: 17:37:25" itemprop="dateCreated datePublished" datetime="2020-01-21T17:32:51+08:00">2020-01-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%99%BA%E8%83%BD%E8%BD%A6/" itemprop="url" rel="index">
+                    <span itemprop="name">智能车</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<p>智能车自制PCB是一件非常有成就感的事情。但是这其中所包含的知识真的很多，记得19年上半年我磨了一个月才真正意义上的画出了可以用的板子（也仅仅只是可以用而已）。<a id="more"></a>接触新鲜的事物是一件非常容易地事情，但是熟练地掌握、融会贯通确实需要大量地实践地，不过好在我非常幸运地有车队地学长帮助：画板子前常常“骚扰”昂总，画板子时参考<a href="https://seujxh.wordpress.com/" target="_blank" rel="noopener">蒋总的博客</a>，疯狂刷AD教程，每回画好板子都是位总、蒋总、昂总三连发，然后再接着修修补补，真的是超级艰辛。</p>
+<p>现在虽说算不上是有多精通PCB绘制，但是基本的操作也算是得心应手了，最后的感觉是画智能车的PCB其实应该算是比较简单的，用昂总的话说是“连连看”也没太大问题哈哈哈，当然这也是句玩笑话，高性能的板子对于整个智能车系统来说还是很有助益的，合理的布局有益于在安装各类传感器时保证车有一个较好的结构（尤其是直立车）；良好的集成也可以防止智能车最后变成“盘丝洞”。</p>
+<p>其实现在回顾起来，对于一个弱电专业的学生，在有一定专业课基础之后，使用AD画一块智能车的板子并不是太难的事情；最大的困难是在上手的最初，你需要了解一些最基本的知识，这也是正是我想写下来的东西。</p>
+<h2 id="Altium-Designer"><a href="#Altium-Designer" class="headerlink" title="Altium Designer"></a>Altium Designer</h2><p>所谓”工欲善其事，必先利其器”。首先来介绍PCB绘制的工具之所以会使用Altium Designer，首先是当时正在上的电子工艺实践有要求对给出的电路利用AD布线，其次是学长们都在用，理所当然的就一直用下去了。所以接下来所有的关于PCB设计的讨论都是基于Altium Designer展开的。</p>
+<p>Altium Designer 是原Protel软件开发商Altium公司推出的一体化的电子产品开发系统，主要运行在Windows操作系统。这套软件通过把<strong>原理图设计、电路仿真、PCB绘制编辑、拓扑逻辑自动布线、信号完整性分析和设计输出等技术</strong>的完美融合，为设计者提供了全新的设计解决方案，使设计者可以轻松进行设计，熟练使用这一软件使电路设计的质量和效率大大提高。—-摘自百度百科</p>
+<h2 id="PCB绘制"><a href="#PCB绘制" class="headerlink" title="PCB绘制"></a>PCB绘制</h2><h3 id="PCB介绍"><a href="#PCB介绍" class="headerlink" title="PCB介绍"></a>PCB介绍</h3><p>PCB（Printed Circuit Board），中文名为<strong>印制电路板</strong>，其实就是电子元器件的支撑体，作为电子元器件电气连接的载体组成特定的电路模块。现在一般电路板直接可以发给PCB厂家（嘉利创、捷配等）制作，制作时间只需两到三天，价格也非常的便宜，所以已经很少有人用三氯化铁腐蚀电路板了。</p>
+<h3 id="使用AD绘制PCB"><a href="#使用AD绘制PCB" class="headerlink" title="使用AD绘制PCB"></a>使用AD绘制PCB</h3><h4 id="绘制前"><a href="#绘制前" class="headerlink" title="绘制前"></a>绘制前</h4><p>使用AD绘制PCB之前，有很多的东西需要准备好。</p>
+<p><strong>１、设计好的电路。</strong>（对应原理图的绘制）</p>
+<p>​    电路的设计十分的重要，原理图直接决定了整个电路是否可以正常地工作，尤其是绘制主板时，单片机的引脚分配决定了整个嵌入式系统是否能真正的正常工作。建议在绘制好原理图后进行反复的检查，确认无误后再进行PCB布线工作。</p>
+<p><strong>２、电路涉及的元件原理图库。</strong>（原理图库可以自行绘制，也可寻找现成的）</p>
+<p>​    电路的原理图库是用在绘制原理图时的，绘制原理图时，使用每个元器件对应的原理图来进行电气连接，所以原理图最关键的是引脚个数一定要与实际元件对应。</p>
+<p>​    其次，一般元件的原理图库和封装库是意义对应的，直观的说就是原理图的引脚和对应封装的引脚应该要一一对应，否则会造成最终的PCB电气连接发生错误，板子就废了。</p>
+<p><strong>３、电路涉及的元件封装库。</strong>（封装库可以根据所需元件的数据手册给出的封装尺寸自行绘制，不过有很多现成的封装库，可以通过各种途径获取）</p>
+<p>​    元件封装库其实就是最后在PCB板上看到的用来放置元器件的过孔或者金属表面，所以要保证它与元件的引脚对应，在绘制好PCB之后购买元器件时实际是依据PCB导出的元件列表来进行的。</p>
+<h4 id="绘制流程"><a href="#绘制流程" class="headerlink" title="绘制流程"></a>绘制流程</h4><p>常规情况下绘制PCB的大致流程如下：</p>
+<p><strong>1、新建PCB工程文件</strong><br>并向工程文件里添加PCB文件和原理图文件<br><strong>2、元件库、封装库设计</strong><br>部分元器件厂商或者经销商不提供元件库和封装库，只给了元器件尺寸图，所以需要自行设计元件库文件或是封装库文件<br><em>元件库设计</em><br>新建 .SchLib 文件：$\color{red}{File-New-Library-Schematic Library}$<br>使用Place下拉菜单或使用快捷工具栏放置图形，引脚等，记得保存！<br><em>封装库的设计</em><br>新建.PcbLib文件：$\color{red}{File-New-Library-PCB Library}$<br>使用Place下拉菜单或使用快捷工具栏，画线，放置孔位，记得保存！<br><strong>3、原理图的绘制</strong><br>(1)新建.SchDoc文件 ：$\color{red}{File-New-Schematic}$<br>(2)添加元器件库和封装库（在软件底部菜单栏$\color{red}{System}$中勾选$\color{red}{Libraries}$，打开侧面工具栏，在侧面工具栏中点击$\color{red}{Libraries…&gt;Add Library}$找到自己保存的库文件并添加）<br>(3)添加各元器件（可直接从侧面工具栏中选择元器件拖入原理图中，在拖动过程中按Tab键修改元器件信息）<br>(4)添加网络标识（Place-Net Label 快捷键<strong>PN</strong>）<br>(5)确定各元器件的封装（打开封装管理器$\color{red}{Tools-Footprint-Manager}$快捷键<strong>TG</strong>，可挨个修改、检查各元器件封装）<br><strong>4、PCB的绘制</strong><br>(1)导入原理图中的各元器件：$\color{red}{Design-Import-Changes-From…}$<br>(2)元器件布局(元器件布局原则：靠近边缘摆放，由边缘向中心布局,按原理图分块布局,元器件是否能成功安装，考虑元器件大小，高度等等 )<br>(3)连线(连线原则：线不走直角，标签不压线,VCC加粗，GND不连，通过铺铜实现等）<br>(4)完成布局连线后就是铺铜操作($\color{red}{Place-Polygon…}$ 或者点击快捷工具栏中的“Place Polygon Plane”按钮,在弹框中的$\color{red}{Net Options }$中的$\color{red}{Connect-to-Net}$选项选GND，勾选去除死铜$\color{red}{Remove-Dead-Copper}$<br>(5)铺铜完成后，可在$\color{red}{Design -&gt; Rules…}$中修改或增加相应规则<br>如：VCC加粗，元器件间距等等<br><strong>5、规则检查</strong><br>修改规则后点击$\color{red}{Tools -&gt; Design-Rule-Check -&gt; Run Design…}$<br>进行规则检查，并修改对应的错误和警告，完成PCB的绘制。<br>至此，这块PCB板子就可以投给厂家生产了。</p>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>PCB绘制的过程中存在很多的细节，这些将在在之后进行详细的讨论，但是要明确的是整个绘制的过程的走向，对于入门者来说，明白自己正在做什么，下一步要做什么是很重要的。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%99%BA%E8%83%BD%E8%BD%A6/" rel="tag"># 智能车</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/18/2.1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E4%BB%BF%E7%9C%9F1/" rel="prev" title="通信原理仿真（一）——平稳过程">
+      <i class="fa fa-chevron-left"></i> 通信原理仿真（一）——平稳过程
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Altium-Designer"><span class="nav-number">1.</span> <span class="nav-text">Altium Designer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PCB绘制"><span class="nav-number">2.</span> <span class="nav-text">PCB绘制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PCB介绍"><span class="nav-number">2.1.</span> <span class="nav-text">PCB介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用AD绘制PCB"><span class="nav-number">2.2.</span> <span class="nav-text">使用AD绘制PCB</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#绘制前"><span class="nav-number">2.2.1.</span> <span class="nav-text">绘制前</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#绘制流程"><span class="nav-number">2.2.2.</span> <span class="nav-text">绘制流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小结"><span class="nav-number">2.2.3.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KZB</p>
+  <div class="site-description" itemprop="description">吉良吉影想过平静的生活</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KZB</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
