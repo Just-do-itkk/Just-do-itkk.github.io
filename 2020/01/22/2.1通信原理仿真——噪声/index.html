@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next-my.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="噪声通常指通信系统中的干扰信号和无用信号。这篇博客主要讨论噪声的表示、窄带噪声的有关性质等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通信原理（二）——噪声">
+<meta property="og:url" content="http://yoursite.com/2020/01/22/2.1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E4%BB%BF%E7%9C%9F%E2%80%94%E2%80%94%E5%99%AA%E5%A3%B0/index.html">
+<meta property="og:site_name" content="Just do it">
+<meta property="og:description" content="噪声通常指通信系统中的干扰信号和无用信号。这篇博客主要讨论噪声的表示、窄带噪声的有关性质等。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-01-22T15:24:47.536Z">
+<meta property="article:modified_time" content="2020-01-22T15:26:22.733Z">
+<meta property="article:author" content="KZB">
+<meta property="article:tag" content="通信原理">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/01/22/2.1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E4%BB%BF%E7%9C%9F%E2%80%94%E2%80%94%E5%99%AA%E5%A3%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>通信原理（二）——噪声 | Just do it</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just do it</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home#首页"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags#标签"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th#分类"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive#归档"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/22/2.1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E4%BB%BF%E7%9C%9F%E2%80%94%E2%80%94%E5%99%AA%E5%A3%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KZB">
+      <meta itemprop="description" content="吉良吉影想过平静的生活">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just do it">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          通信原理（二）——噪声
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-01-22 23:24:47 / Modified: 23:26:22" itemprop="dateCreated datePublished" datetime="2020-01-22T23:24:47+08:00">2020-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86/" itemprop="url" rel="index">
+                    <span itemprop="name">通信原理</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<p>噪声通常指通信系统中的干扰信号和无用信号。这篇博客主要讨论噪声的表示、窄带噪声的有关性质等。<a id="more"></a></p>
+<h2 id="信号的表示"><a href="#信号的表示" class="headerlink" title="信号的表示"></a>信号的表示</h2><p>学通信原理的时候，一直没有搞清楚课本附录的信号表示方法。</p>
+<h3 id="希尔伯特变换"><a href="#希尔伯特变换" class="headerlink" title="希尔伯特变换"></a>希尔伯特变换</h3><h4 id="希尔伯特变换的定义"><a href="#希尔伯特变换的定义" class="headerlink" title="希尔伯特变换的定义"></a>希尔伯特变换的定义</h4><p>在信号与系统中学习的傅里叶变换对于估算能量信号或功率有限信号的频率成分特别有用，可以说傅里叶变换为分析和设计选频滤波器（<strong>在频率上分离信号</strong>）提供了数学基础。那么理所当然的可以联想其他用于分离信号的方法——<strong>基于相位选择来分离信号</strong>。相干信号之间采用相位的偏移来实现所需的信号分离，希尔伯特变换就是当给定信号的所有成分的相角都偏移$\pm\frac\pi 2$时得到的时域函数。</p>
+<p><strong>希尔伯特变换的定义</strong>：设信号$g(t)$，傅里叶变换为$G(f)$。$g(t)$的希尔伯特变换为</p>
+<script type="math/tex; mode=display">
+\widehat{g}(t)=\frac1\pi\int_{-\infty}^\infty\frac{g(\tau)}{t-\tau}d\tau</script><p>该变换为一线性运算。</p>
+<p><strong>反希尔伯特变换的定义</strong>：${g}(t)=-\frac1\pi\int_{-\infty}^\infty\frac{\widehat g(\tau)}{t-\tau}d\tau$</p>
+<p>根据卷积运算公式，可以将$\widehat{g}(t)$视作$g(t)$与时域函数$\frac1{\pi t}$的卷积，那么从频域的角度来看，就是$G(f)$与$F(\frac1{\pi t})$的乘积。</p>
+<script type="math/tex; mode=display">
+\frac1{\pi t}\rightleftharpoons-j sgn(f)</script><p>其中$sgn(f)$为频域的符号函数。</p>
+<p>也就是说通过<strong>希尔伯特变换，可以使得信号的正频率输入信号产生$-90^\circ$的相移，正频率输入信号产生$+90^\circ$的相移，而信号的所有频率成分的幅度并不受影响。</strong></p>
+<h4 id="希尔伯特变换的性质"><a href="#希尔伯特变换的性质" class="headerlink" title="希尔伯特变换的性质"></a>希尔伯特变换的性质</h4><p>1、信号$g(t)$及其希尔伯特变换$\widehat{g}(t)$具有相同的幅度谱</p>
+<p>2、如果信号$\widehat{g}(t)$是信号$g(t)$的希尔伯特变换，则$\widehat{g}(t)$的希尔伯特变换为$-g(t)$。</p>
+<p>3、信号$g(t)$及其希尔伯特变换$\widehat{g}(t)$在整个事时间区间$(-\infty,+\infty)$是正交的，即$\int_{-\infty}^\infty g(t)\widehat{g}(t)dt=0$。</p>
+<h3 id="预包络"><a href="#预包络" class="headerlink" title="预包络"></a>预包络</h3><p>假设有一个实数值的信号$g(t)$，定义信号的预包络信号为</p>
+<script type="math/tex; mode=display">
+g_+(t)=g(t)+j\widehat{g}(t)</script><p>其中$\widehat{g}(t)$为实值信号$g(t)$的希尔伯特变换。</p>
+<p>预包络的重要特性是其<strong>傅里叶变换式</strong>：$G_+(f)=G(f)+sgn(f)\widehat G(f)$</p>
+<p>换一种表示方法就很明显了：</p>
+<script type="math/tex; mode=display">
+G_+(f)=\left\{\begin{aligned}2G(f),& &f>0\\G(0),& &f=0 \\0,& &f<0\end{aligned}\right.</script><p>这说明<strong>信号的预包络在所有的负频率上没有频率成分</strong>。所以除了用预包络的定义式来计算信号的预包络之外，还可以用信号的傅里叶变换直接表示出频率表达式，再通过傅里叶反变换得到预包络时域表达式。</p>
+<p>其实以上预包络是实值信号的正频率预包络，而负频率的预包络可以对应定义：$ g_-(t)=g(t)-j\widehat{g}(t)=g_+^*(t)$</p>
+<p>傅里叶变换为$G_+(f)=\left\{\begin{aligned}0,&amp; &amp;f&gt;0\\G(0),&amp; &amp;f=0 \\2G(f),&amp; &amp;f&lt;0\end{aligned}\right.$，其中$G_+(f)+G_-(f)=2G(f)$。<br><strong>预包络$g_-(t)$与$g_+(t)$组成了复值信号的互补对。</strong></p>
+<h3 id="带通信号的规范表示法"><a href="#带通信号的规范表示法" class="headerlink" title="带通信号的规范表示法"></a>带通信号的规范表示法</h3><p>带通信号$g(t)$的傅里叶变换$G(f)$只在中心频率$\pm f_c$且频率带宽为2W的范围内需要考虑，$f_c$为载频，相比于$f_c$来说一般带宽$2W$很小，这样的信号称为窄带信号。</p>
+<p>假设该窄带信号$g(t)$的傅里叶变换为$G(f)$，中心频率为$\pm f_c$那么该信号的预包络为</p>
+<script type="math/tex; mode=display">
+g_+(t)=\tilde g(t)exp(j2\pi f_ct)</script><p>其中的$\tilde g(t)$为信号的复包络。</p>
+<p>复包络通过这个式子可以分析出：</p>
+<p>1）带通信号的复包络信号是一个低通信号（傅里叶变换频移特性）；</p>
+<p>2）给定信号$g(t)$是预包络$g_+(t)$的实部。则信号可以由复包络信号$\tilde g(t)$表示为：</p>
+<script type="math/tex; mode=display">
+g(t)=Re[\tilde g(t)exp(j2\pi f_ct)]</script><p>通常情况下$\tilde g(t)$为一个复数，所以可以表示为$\tilde g(t)=g_I(t)+jg_Q(t)$，其中$g_I(t)$和$g_Q(t)$都是实数值的低通函数，低通特性继承自复包络$\tilde g(t)$。</p>
+<p>经过这些表示后，信号$g(t)$可以表示为</p>
+<script type="math/tex; mode=display">
+g(t)=g_I(t)cos(2\pi f_ct)-g_Q(t)sin(2\pi f_ct)</script><p>$g_I(t)$称为带通信号$g(t)$的通向分量，$g_Q(t)$称为带通信号$g(t)$的正交分量。</p>
+<p>复包络的表示方法除了同向和正交表示方法（笛卡尔形式）之外，还可以通过极坐标形式表示：</p>
+<script type="math/tex; mode=display">
+\tilde g(t)=a(t)exp[j\phi(t)]</script><p>那么信号$g(t)$就可以相应的表示为：$g(t)=a(t)cos[2\pi f_ct+\phi(t)]$，其中$a(t)=\sqrt{g_I^2(t)+g_Q^2(t)}$为带通信号的自然包络，$\phi(t)=tan^{-1}(\frac{g_Q(t)}{g_I(t)})$为信号的相位。</p>
+<h2 id="噪声"><a href="#噪声" class="headerlink" title="噪声"></a>噪声</h2><h2 id="窄带噪声"><a href="#窄带噪声" class="headerlink" title="窄带噪声"></a>窄带噪声</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><h3 id="基于同相和正交分量的表示法"><a href="#基于同相和正交分量的表示法" class="headerlink" title="基于同相和正交分量的表示法"></a>基于同相和正交分量的表示法</h3><h3 id="基于包络和相位分量的表示法"><a href="#基于包络和相位分量的表示法" class="headerlink" title="基于包络和相位分量的表示法"></a>基于包络和相位分量的表示法</h3><h3 id="正弦信号加窄带信号"><a href="#正弦信号加窄带信号" class="headerlink" title="正弦信号加窄带信号"></a>正弦信号加窄带信号</h3>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86/" rel="tag"># 通信原理</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/21/1.2%E6%99%BA%E8%83%BD%E8%BD%A6PCB%EF%BC%88%E4%B8%80%EF%BC%89/" rel="prev" title="智能车硬件——PCB（一）">
+      <i class="fa fa-chevron-left"></i> 智能车硬件——PCB（一）
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#信号的表示"><span class="nav-number">1.</span> <span class="nav-text">信号的表示</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#希尔伯特变换"><span class="nav-number">1.1.</span> <span class="nav-text">希尔伯特变换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#希尔伯特变换的定义"><span class="nav-number">1.1.1.</span> <span class="nav-text">希尔伯特变换的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#希尔伯特变换的性质"><span class="nav-number">1.1.2.</span> <span class="nav-text">希尔伯特变换的性质</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预包络"><span class="nav-number">1.2.</span> <span class="nav-text">预包络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#带通信号的规范表示法"><span class="nav-number">1.3.</span> <span class="nav-text">带通信号的规范表示法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#噪声"><span class="nav-number">2.</span> <span class="nav-text">噪声</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#窄带噪声"><span class="nav-number">3.</span> <span class="nav-text">窄带噪声</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念"><span class="nav-number">3.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于同相和正交分量的表示法"><span class="nav-number">3.2.</span> <span class="nav-text">基于同相和正交分量的表示法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于包络和相位分量的表示法"><span class="nav-number">3.3.</span> <span class="nav-text">基于包络和相位分量的表示法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正弦信号加窄带信号"><span class="nav-number">3.4.</span> <span class="nav-text">正弦信号加窄带信号</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KZB</p>
+  <div class="site-description" itemprop="description">吉良吉影想过平静的生活</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KZB</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

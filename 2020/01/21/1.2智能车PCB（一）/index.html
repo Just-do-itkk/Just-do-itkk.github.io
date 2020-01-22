@@ -54,7 +54,7 @@
 <meta property="og:description" content="智能车自制PCB是一件非常有成就感的事情。但是这其中所包含的知识真的很多，记得19年上半年我磨了一个月才真正意义上的画出了可以用的板子（也仅仅只是可以用而已）。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-01-21T09:32:51.761Z">
-<meta property="article:modified_time" content="2020-01-21T09:37:25.442Z">
+<meta property="article:modified_time" content="2020-01-21T09:49:50.887Z">
 <meta property="article:author" content="KZB">
 <meta property="article:tag" content="智能车">
 <meta name="twitter:card" content="summary">
@@ -204,7 +204,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-01-21 17:32:51 / Modified: 17:37:25" itemprop="dateCreated datePublished" datetime="2020-01-21T17:32:51+08:00">2020-01-21</time>
+              <time title="Created: 2020-01-21 17:32:51 / Modified: 17:49:50" itemprop="dateCreated datePublished" datetime="2020-01-21T17:32:51+08:00">2020-01-21</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -245,8 +245,8 @@
 <p><strong>３、电路涉及的元件封装库。</strong>（封装库可以根据所需元件的数据手册给出的封装尺寸自行绘制，不过有很多现成的封装库，可以通过各种途径获取）</p>
 <p>​    元件封装库其实就是最后在PCB板上看到的用来放置元器件的过孔或者金属表面，所以要保证它与元件的引脚对应，在绘制好PCB之后购买元器件时实际是依据PCB导出的元件列表来进行的。</p>
 <h4 id="绘制流程"><a href="#绘制流程" class="headerlink" title="绘制流程"></a>绘制流程</h4><p>常规情况下绘制PCB的大致流程如下：</p>
-<p><strong>1、新建PCB工程文件</strong><br>并向工程文件里添加PCB文件和原理图文件<br><strong>2、元件库、封装库设计</strong><br>部分元器件厂商或者经销商不提供元件库和封装库，只给了元器件尺寸图，所以需要自行设计元件库文件或是封装库文件<br><em>元件库设计</em><br>新建 .SchLib 文件：$\color{red}{File-New-Library-Schematic Library}$<br>使用Place下拉菜单或使用快捷工具栏放置图形，引脚等，记得保存！<br><em>封装库的设计</em><br>新建.PcbLib文件：$\color{red}{File-New-Library-PCB Library}$<br>使用Place下拉菜单或使用快捷工具栏，画线，放置孔位，记得保存！<br><strong>3、原理图的绘制</strong><br>(1)新建.SchDoc文件 ：$\color{red}{File-New-Schematic}$<br>(2)添加元器件库和封装库（在软件底部菜单栏$\color{red}{System}$中勾选$\color{red}{Libraries}$，打开侧面工具栏，在侧面工具栏中点击$\color{red}{Libraries…&gt;Add Library}$找到自己保存的库文件并添加）<br>(3)添加各元器件（可直接从侧面工具栏中选择元器件拖入原理图中，在拖动过程中按Tab键修改元器件信息）<br>(4)添加网络标识（Place-Net Label 快捷键<strong>PN</strong>）<br>(5)确定各元器件的封装（打开封装管理器$\color{red}{Tools-Footprint-Manager}$快捷键<strong>TG</strong>，可挨个修改、检查各元器件封装）<br><strong>4、PCB的绘制</strong><br>(1)导入原理图中的各元器件：$\color{red}{Design-Import-Changes-From…}$<br>(2)元器件布局(元器件布局原则：靠近边缘摆放，由边缘向中心布局,按原理图分块布局,元器件是否能成功安装，考虑元器件大小，高度等等 )<br>(3)连线(连线原则：线不走直角，标签不压线,VCC加粗，GND不连，通过铺铜实现等）<br>(4)完成布局连线后就是铺铜操作($\color{red}{Place-Polygon…}$ 或者点击快捷工具栏中的“Place Polygon Plane”按钮,在弹框中的$\color{red}{Net Options }$中的$\color{red}{Connect-to-Net}$选项选GND，勾选去除死铜$\color{red}{Remove-Dead-Copper}$<br>(5)铺铜完成后，可在$\color{red}{Design -&gt; Rules…}$中修改或增加相应规则<br>如：VCC加粗，元器件间距等等<br><strong>5、规则检查</strong><br>修改规则后点击$\color{red}{Tools -&gt; Design-Rule-Check -&gt; Run Design…}$<br>进行规则检查，并修改对应的错误和警告，完成PCB的绘制。<br>至此，这块PCB板子就可以投给厂家生产了。</p>
-<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>PCB绘制的过程中存在很多的细节，这些将在在之后进行详细的讨论，但是要明确的是整个绘制的过程的走向，对于入门者来说，明白自己正在做什么，下一步要做什么是很重要的。</p>
+<p><strong>1、新建PCB工程文件</strong><br>并向工程文件里添加PCB文件和原理图文件<br><strong>2、元件库、封装库设计</strong><br>部分元器件厂商或者经销商不提供元件库和封装库，只给了元器件尺寸图，所以需要自行设计元件库文件或是封装库文件<br><em>元件库设计</em><br>新建 .SchLib 文件：File-New-Library-Schematic Library}<br>使用Place下拉菜单或使用快捷工具栏放置图形，引脚等，记得保存！<br><em>封装库的设计</em><br>新建.PcbLib文件：File-New-Library-PCB Library<br>使用Place下拉菜单或使用快捷工具栏，画线，放置孔位，记得保存！<br><strong>3、原理图的绘制</strong><br>(1)新建.SchDoc文件 ：File-New-Schematic<br>(2)添加元器件库和封装库（在软件底部菜单栏System中勾选Libraries，打开侧面工具栏，在侧面工具栏中点击Libraries…&gt;Add Library找到自己保存的库文件并添加）<br>(3)添加各元器件（可直接从侧面工具栏中选择元器件拖入原理图中，在拖动过程中按Tab键修改元器件信息）<br>(4)添加网络标识（Place-Net Label 快捷键<strong>PN</strong>）<br>(5)确定各元器件的封装（打开封装管理器Tools-Footprint-Manager快捷键<strong>TG</strong>，可挨个修改、检查各元器件封装）<br><strong>4、PCB的绘制</strong><br>(1)导入原理图中的各元器件：Design-Import-Changes-From…<br>(2)元器件布局(元器件布局原则：靠近边缘摆放，由边缘向中心布局,按原理图分块布局,元器件是否能成功安装，考虑元器件大小，高度等等 )<br>(3)连线(连线原则：线不走直角，标签不压线,VCC加粗，GND不连，通过铺铜实现等）<br>(4)完成布局连线后就是铺铜操作Place-Polygon… 或者点击快捷工具栏中的Place Polygon Plane按钮,在弹框中的Net Options中的Connect to Net选项选GND，勾选去除死铜Remove Dead Copper<br>(5)铺铜完成后，可在Design -&gt; Rules…中修改或增加相应规则<br>如：VCC加粗，元器件间距等等<br><strong>5、规则检查</strong><br>修改规则后点击Tools -&gt; Design-Rule-Check -&gt; Run Design…<br>进行规则检查，并修改对应的错误和警告，完成PCB的绘制。<br>至此，这块PCB板子就可以投给厂家生产了。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>PCB绘制的过程中存在很多的细节，这些将在在之后进行详细的讨论，但是要明确的是整个绘制的过程的走向，对于入门者来说，明白自己正在做什么，下一步要做什么是很重要的。</p>
 
     </div>
 
@@ -265,10 +265,13 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/01/18/2.1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E4%BB%BF%E7%9C%9F1/" rel="prev" title="通信原理仿真（一）——平稳过程">
+    <a href="/2020/01/18/2.1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E4%BB%BF%E7%9C%9F%E2%80%94%E2%80%94%E5%B9%B3%E7%A8%B3%E8%BF%87%E7%A8%8B/" rel="prev" title="通信原理仿真（一）——平稳过程">
       <i class="fa fa-chevron-left"></i> 通信原理仿真（一）——平稳过程
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/01/22/2.1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E4%BB%BF%E7%9C%9F%E2%80%94%E2%80%94%E5%99%AA%E5%A3%B0/" rel="next" title="通信原理（二）——噪声">
+      通信原理（二）——噪声 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -328,7 +331,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Altium-Designer"><span class="nav-number">1.</span> <span class="nav-text">Altium Designer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PCB绘制"><span class="nav-number">2.</span> <span class="nav-text">PCB绘制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PCB介绍"><span class="nav-number">2.1.</span> <span class="nav-text">PCB介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用AD绘制PCB"><span class="nav-number">2.2.</span> <span class="nav-text">使用AD绘制PCB</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#绘制前"><span class="nav-number">2.2.1.</span> <span class="nav-text">绘制前</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#绘制流程"><span class="nav-number">2.2.2.</span> <span class="nav-text">绘制流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小结"><span class="nav-number">2.2.3.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Altium-Designer"><span class="nav-number">1.</span> <span class="nav-text">Altium Designer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PCB绘制"><span class="nav-number">2.</span> <span class="nav-text">PCB绘制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PCB介绍"><span class="nav-number">2.1.</span> <span class="nav-text">PCB介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用AD绘制PCB"><span class="nav-number">2.2.</span> <span class="nav-text">使用AD绘制PCB</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#绘制前"><span class="nav-number">2.2.1.</span> <span class="nav-text">绘制前</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#绘制流程"><span class="nav-number">2.2.2.</span> <span class="nav-text">绘制流程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">3.</span> <span class="nav-text">小结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -342,7 +345,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -355,7 +358,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
