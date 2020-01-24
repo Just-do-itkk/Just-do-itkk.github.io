@@ -54,7 +54,7 @@
 <meta property="og:description" content="噪声通常指通信系统中的干扰信号和无用信号。这篇博客主要讨论噪声的表示、窄带噪声的有关性质等。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-01-22T15:24:47.536Z">
-<meta property="article:modified_time" content="2020-01-22T15:26:22.733Z">
+<meta property="article:modified_time" content="2020-01-24T11:01:23.380Z">
 <meta property="article:author" content="KZB">
 <meta property="article:tag" content="通信原理">
 <meta name="twitter:card" content="summary">
@@ -202,10 +202,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-01-22 23:24:47 / Modified: 23:26:22" itemprop="dateCreated datePublished" datetime="2020-01-22T23:24:47+08:00">2020-01-22</time>
+              <time title="Created: 2020-01-22 23:24:47" itemprop="dateCreated datePublished" datetime="2020-01-22T23:24:47+08:00">2020-01-22</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-24 19:01:23" itemprop="dateModified" datetime="2020-01-24T19:01:23+08:00">2020-01-24</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -231,7 +237,7 @@
       
         <hr>
 <p>噪声通常指通信系统中的干扰信号和无用信号。这篇博客主要讨论噪声的表示、窄带噪声的有关性质等。<a id="more"></a></p>
-<h2 id="信号的表示"><a href="#信号的表示" class="headerlink" title="信号的表示"></a>信号的表示</h2><p>学通信原理的时候，一直没有搞清楚课本附录的信号表示方法。</p>
+<h2 id="信号的表示"><a href="#信号的表示" class="headerlink" title="信号的表示"></a>信号的表示</h2><p>学通信原理的时候，一直没有搞清楚课本附录的信号表示方法。其中主要要弄明白的概念是信号的预包络、复包络、包络。而希尔伯特变换是讨论这三个关于包络概念的数学基础之一。</p>
 <h3 id="希尔伯特变换"><a href="#希尔伯特变换" class="headerlink" title="希尔伯特变换"></a>希尔伯特变换</h3><h4 id="希尔伯特变换的定义"><a href="#希尔伯特变换的定义" class="headerlink" title="希尔伯特变换的定义"></a>希尔伯特变换的定义</h4><p>在信号与系统中学习的傅里叶变换对于估算能量信号或功率有限信号的频率成分特别有用，可以说傅里叶变换为分析和设计选频滤波器（<strong>在频率上分离信号</strong>）提供了数学基础。那么理所当然的可以联想其他用于分离信号的方法——<strong>基于相位选择来分离信号</strong>。相干信号之间采用相位的偏移来实现所需的信号分离，希尔伯特变换就是当给定信号的所有成分的相角都偏移$\pm\frac\pi 2$时得到的时域函数。</p>
 <p><strong>希尔伯特变换的定义</strong>：设信号$g(t)$，傅里叶变换为$G(f)$。$g(t)$的希尔伯特变换为</p>
 <script type="math/tex; mode=display">
@@ -268,7 +274,46 @@ g(t)=g_I(t)cos(2\pi f_ct)-g_Q(t)sin(2\pi f_ct)</script><p>$g_I(t)$称为带通�
 <p>复包络的表示方法除了同向和正交表示方法（笛卡尔形式）之外，还可以通过极坐标形式表示：</p>
 <script type="math/tex; mode=display">
 \tilde g(t)=a(t)exp[j\phi(t)]</script><p>那么信号$g(t)$就可以相应的表示为：$g(t)=a(t)cos[2\pi f_ct+\phi(t)]$，其中$a(t)=\sqrt{g_I^2(t)+g_Q^2(t)}$为带通信号的自然包络，$\phi(t)=tan^{-1}(\frac{g_Q(t)}{g_I(t)})$为信号的相位。</p>
-<h2 id="噪声"><a href="#噪声" class="headerlink" title="噪声"></a>噪声</h2><h2 id="窄带噪声"><a href="#窄带噪声" class="headerlink" title="窄带噪声"></a>窄带噪声</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><h3 id="基于同相和正交分量的表示法"><a href="#基于同相和正交分量的表示法" class="headerlink" title="基于同相和正交分量的表示法"></a>基于同相和正交分量的表示法</h3><h3 id="基于包络和相位分量的表示法"><a href="#基于包络和相位分量的表示法" class="headerlink" title="基于包络和相位分量的表示法"></a>基于包络和相位分量的表示法</h3><h3 id="正弦信号加窄带信号"><a href="#正弦信号加窄带信号" class="headerlink" title="正弦信号加窄带信号"></a>正弦信号加窄带信号</h3>
+<h2 id="噪声"><a href="#噪声" class="headerlink" title="噪声"></a>噪声</h2><p>噪声通常指通信系统中的干扰信号和无用信号，对于噪声往往是不能做到完全的控制的。噪声源可以是系统外部的也可以是系统内部的。系统内部的噪声包括由电源的电压或电流自发波动引起的一类重要的噪声。这一类噪声代表了使用电子设备的通信系统中传输和检测信号的基本极限（想来这里正好和通信电子线路中的接受机灵敏度相对应，包括IFDR和SFDR）。常见的由电流波动产生的噪声有散弹噪声和热噪声。</p>
+<h3 id="白噪声"><a href="#白噪声" class="headerlink" title="白噪声"></a>白噪声</h3><p>在通信系统的噪声分析中，通常是基于一种称为白噪声的理想噪声形式，白噪声的噪声功率谱密度与工作频率无关。样本函数为$w(t)$的白噪声的功率谱密度为$S_w(f)=\frac{N_0}2$，$N_0$的单位为$W/Hz$（瓦特每赫兹）。$N_0$的取值一般为通信系统接收机的输入量级，表达式为$N_0=kT_0$，$k$为玻尔兹曼常量，$T_0$为接收机的等效噪声温度（又一次与通信电子线路衔接上了）。</p>
+<p>白噪声的自相关函数为其功率谱密度的傅里叶反变换：</p>
+<script type="math/tex; mode=display">
+R_W(\tau)=\frac{N_0}2\delta(\tau)</script><p>这表示白噪声的自相关函数为$\tau=0$时刻的加权因子为$\frac{N_0}2$的冲激函数，在$\tau\neq0$时$R_W(\tau)=0$恒成立，这说明<strong>两个不同的白噪声样本不管他们在时间上靠的有多近都是不相关的</strong>。</p>
+<p><strong>在线性系统分析中，白噪声的作用和冲激函数相同。与冲激脉冲一样，必须让白噪声通过与带限系统类似的系统，才能观察它的影响。因此只要系统输入端的噪声带宽比系统带宽大得多就可以认为系统是白噪声的。</strong></p>
+<h2 id="窄带噪声"><a href="#窄带噪声" class="headerlink" title="窄带噪声"></a>窄带噪声</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>在通信系统中一般包括用于预处理接受信号的一些装置，预处理装置采用窄带滤波器（带宽正好足够使接收信号的调制成分无失真的通过，且限制多余的噪声通过）。</p>
+<p><strong>窄带噪声为通过滤波器后输出的噪声。</strong></p>
+<p>一般来说在通信原理中对于各个通信系统的噪声性能分析时都是对于窄带噪声进行研究的，这是因为信号的传输一般带宽有限，带宽是通信中最重要的资源之一。而窄带信号的数学表示方法主要有两种：<strong>基于同相与正交分量的表示法和基于包络和相位分量的表示法</strong>。<em>两种方法是可以相互转换的，并且两种表示法也体现了窄带噪声本身具有的特性</em>。</p>
+<p>这两种表示方法在第一部分的信号表示中也有提到，其实对于带通信号来说理论上都是可以通过这两种方式表示出来。</p>
+<h3 id="基于同相和正交分量的表示法"><a href="#基于同相和正交分量的表示法" class="headerlink" title="基于同相和正交分量的表示法"></a>基于同相和正交分量的表示法</h3><p>考虑带宽为$2B$、中心频率为$f_c$的窄带噪声$n(t)$，那么利用$n(t)$的同相分量和正交分量可以将$n(t)$表示为：</p>
+<script type="math/tex; mode=display">
+n(t)=n_I(t)cos(2\pi f_ct)-n_Q(t)sin(2\pi f_ct)</script><p>有前面的描述可知，$n_I(t)$和$n_Q(t)$都是低通信号。</p>
+<p><strong>窄带噪声同相分量和正交分量表示方法的一些重要特性：</strong></p>
+<p>1、窄带信号$n(t)$的同相分量$n_I(t)$和正交分量$n_Q(t)$具有零均值。</p>
+<p>2、如果窄带信号$n(t)$是高斯型，同相分量$n_I(t)$和正交分量$n_Q(t)$也都是高斯型的。</p>
+<p>3、如果窄带信号$n(t)$是平稳定，同相分量$n_I(t)$和正交分量$n_Q(t)$也都是平稳的。</p>
+<p>4、同相分量$n_I(t)$和正交分量$n_Q(t)$具有相同的功率谱密度且与窄带噪声$n(t)$的功率谱密度$S_N(f)$的关系为：</p>
+<script type="math/tex; mode=display">
+S_{N_I}(f)=S_{N_Q}(f)=\left\{\begin{aligned}S_N(f-f_c)+S_N(f+f_c),& &-B\le f\le B\\0,& &otherwise\end{aligned}\right.</script><p>其中假设$S_N(f)$占用了频率间隔$f_c-B\le|f|\le f_c+B$，$f_c&gt;B$。</p>
+<p>5、同相分量$n_I(t)$和正交分量$n_Q(t)$具有相同的方差，且值与$n(t)$的方差相等。</p>
+<p>6、窄带噪声$n(t)$的同相分量$n_I(t)$和正交分量$n_Q(t)$的互功率谱密度为纯虚数。</p>
+<p>7、假定窄带噪声$n(t)$是高斯型的，并且功率谱密度$S_N(f)$关于中心频率$f_c$对称，那么同相分量$n_I(t)$和正交分量$n_Q(t)$是统计独立的。</p>
+<h3 id="基于包络和相位分量的表示法"><a href="#基于包络和相位分量的表示法" class="headerlink" title="基于包络和相位分量的表示法"></a>基于包络和相位分量的表示法</h3><p>利用包络表示窄带噪声的方法与第一部分有着相同的思路：</p>
+<script type="math/tex; mode=display">
+n(t)=r(t)cos[2\pi f_ct+\phi(t)]</script><p>其中</p>
+<script type="math/tex; mode=display">
+r(t)=\sqrt{n_I^2(t)+n_Q^2(t)},\phi(t)=tan^{-1}[\frac{n_Q(t)}{n_I(t)}]</script><p>$r(t)$和$\phi(t)$分别表示窄带噪声信号的包络和相位函数。</p>
+<h3 id="正弦信号加窄带信号"><a href="#正弦信号加窄带信号" class="headerlink" title="正弦信号加窄带信号"></a>正弦信号加窄带信号</h3><p>假设在正弦信号$A\cos(2\pi f_ct)$上叠加窄带噪声$n(t)$，其中$A$为正弦信号幅度，$f_c$为正弦信号频率。则样本函数表示为：</p>
+<script type="math/tex; mode=display">
+x(t)=A\cos(2\pi f_ct)+n(t)=A\cos(2\pi f_ct)+n_I(t)cos(2\pi f_ct)-n_Q(t)sin(2\pi f_ct)</script><p>使得$n_I^{‘}(t)=A+n_I(t)$则样本函数可以简化为：</p>
+<script type="math/tex; mode=display">
+x(t)=n_I(t)^{'}cos(2\pi f_ct)-n_Q(t)sin(2\pi f_ct)</script><p>假设$n(t)$是均值为零，方差为$\sigma^2$的高斯过程，那么有如下性质：</p>
+<p>1）$n_I(t)^{‘}$和$n_Q(t)$为高斯型，并且是统计独立的。</p>
+<p>2）$n_I(t)^{‘}$的均值为A，$n_Q(t)$的均值为零。</p>
+<p>3）$n_I(t)^{‘}$和$n_Q(t)$的方差都是$\sigma^2$。</p>
+<p>且对于信号$x(t)$来说，可用包络相位表示为</p>
+<script type="math/tex; mode=display">
+x(t)=r(t)cos[2\pi f_ct+\phi(t)]</script><p>则其中的$r(t)$和$\phi(t)$分别为：$r(t)=\sqrt{[n_I^{‘}(t)]^2+n_Q^2(t)}$，$\phi(t)=tan^{-1}[\frac{n_Q(t)}{n_I^{‘}(t)}]$。</p>
+
     </div>
 
     
@@ -349,7 +394,7 @@ g(t)=g_I(t)cos(2\pi f_ct)-g_Q(t)sin(2\pi f_ct)</script><p>$g_I(t)$称为带通�
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#信号的表示"><span class="nav-number">1.</span> <span class="nav-text">信号的表示</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#希尔伯特变换"><span class="nav-number">1.1.</span> <span class="nav-text">希尔伯特变换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#希尔伯特变换的定义"><span class="nav-number">1.1.1.</span> <span class="nav-text">希尔伯特变换的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#希尔伯特变换的性质"><span class="nav-number">1.1.2.</span> <span class="nav-text">希尔伯特变换的性质</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预包络"><span class="nav-number">1.2.</span> <span class="nav-text">预包络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#带通信号的规范表示法"><span class="nav-number">1.3.</span> <span class="nav-text">带通信号的规范表示法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#噪声"><span class="nav-number">2.</span> <span class="nav-text">噪声</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#窄带噪声"><span class="nav-number">3.</span> <span class="nav-text">窄带噪声</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念"><span class="nav-number">3.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于同相和正交分量的表示法"><span class="nav-number">3.2.</span> <span class="nav-text">基于同相和正交分量的表示法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于包络和相位分量的表示法"><span class="nav-number">3.3.</span> <span class="nav-text">基于包络和相位分量的表示法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正弦信号加窄带信号"><span class="nav-number">3.4.</span> <span class="nav-text">正弦信号加窄带信号</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#信号的表示"><span class="nav-number">1.</span> <span class="nav-text">信号的表示</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#希尔伯特变换"><span class="nav-number">1.1.</span> <span class="nav-text">希尔伯特变换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#希尔伯特变换的定义"><span class="nav-number">1.1.1.</span> <span class="nav-text">希尔伯特变换的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#希尔伯特变换的性质"><span class="nav-number">1.1.2.</span> <span class="nav-text">希尔伯特变换的性质</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预包络"><span class="nav-number">1.2.</span> <span class="nav-text">预包络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#带通信号的规范表示法"><span class="nav-number">1.3.</span> <span class="nav-text">带通信号的规范表示法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#噪声"><span class="nav-number">2.</span> <span class="nav-text">噪声</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#白噪声"><span class="nav-number">2.1.</span> <span class="nav-text">白噪声</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#窄带噪声"><span class="nav-number">3.</span> <span class="nav-text">窄带噪声</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念"><span class="nav-number">3.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于同相和正交分量的表示法"><span class="nav-number">3.2.</span> <span class="nav-text">基于同相和正交分量的表示法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于包络和相位分量的表示法"><span class="nav-number">3.3.</span> <span class="nav-text">基于包络和相位分量的表示法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正弦信号加窄带信号"><span class="nav-number">3.4.</span> <span class="nav-text">正弦信号加窄带信号</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -376,7 +421,7 @@ g(t)=g_I(t)cos(2\pi f_ct)-g_Q(t)sin(2\pi f_ct)</script><p>$g_I(t)$称为带通�
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
