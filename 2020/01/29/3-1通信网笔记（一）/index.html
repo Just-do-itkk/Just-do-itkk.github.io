@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next-my.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="协议、服务和分层示例协议的概念：协议是控制两个或多个通信体之间进行交互的一组规则；协议的目的是提供多种类型的通信服务。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通信网笔记（一）">
+<meta property="og:url" content="http://yoursite.com/2020/01/29/3-1%E9%80%9A%E4%BF%A1%E7%BD%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
+<meta property="og:site_name" content="Just do it">
+<meta property="og:description" content="协议、服务和分层示例协议的概念：协议是控制两个或多个通信体之间进行交互的一组规则；协议的目的是提供多种类型的通信服务。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-01-29T14:21:01.209Z">
+<meta property="article:modified_time" content="2020-01-29T14:28:24.307Z">
+<meta property="article:author" content="KZB">
+<meta property="article:tag" content="通信网">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/01/29/3-1%E9%80%9A%E4%BF%A1%E7%BD%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>通信网笔记（一） | Just do it</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just do it</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">吉良吉影想过平静的生活</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home#首页"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags#标签"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th#分类"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive#归档"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/29/3-1%E9%80%9A%E4%BF%A1%E7%BD%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KZB">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just do it">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          通信网笔记（一）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-01-29 22:21:01 / Modified: 22:28:24" itemprop="dateCreated datePublished" datetime="2020-01-29T22:21:01+08:00">2020-01-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%80%9A%E4%BF%A1%E7%BD%91/" itemprop="url" rel="index">
+                    <span itemprop="name">通信网</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/01/29/3-1%E9%80%9A%E4%BF%A1%E7%BD%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" class="post-meta-item leancloud_visitors" data-flag-title="通信网笔记（一）" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<h2 id="协议、服务和分层示例"><a href="#协议、服务和分层示例" class="headerlink" title="协议、服务和分层示例"></a>协议、服务和分层示例</h2><p>协议的概念：协议是控制两个或多个通信体之间进行交互的一组规则；协议的目的是<strong>提供多种类型的通信服务</strong>。<a id="more"></a></p>
+<p>计算机中的服务器进程监听来自端口的服务请求。<strong>端口就是一个地址，用来表明哪一个进程将要接收发往特定机器的消息。</strong>应用广泛的应用程序都有其服务器指定的公认端口号，以便其他计算机的客户端进程能够容易地按要求发送请求，服务器对这些请求做出响应。</p>
+<h3 id="通过万维网进行浏览"><a href="#通过万维网进行浏览" class="headerlink" title="通过万维网进行浏览"></a>通过万维网进行浏览</h3><p>通过万维网（WWW）框架我们可以访问已经连接到Internet上的计算机中的文件，这些文件以<strong>超文本标记语言（HTML）</strong>编写而成，可以包括文本、图表和其他媒体格式，并通过文件中的链接互相联系起来。</p>
+<p>通过浏览器程序访问Web页，浏览其中所显示的文档，并可以单击链接来访问其他文档。每一个链接都为浏览器提供了<strong>统一资源定位符（URL），URL可以指定存储文档的机器名和包含请求文档的文件名</strong>。</p>
+<p><strong>超文本传输协议（HTTP）详细规定了<em>客户端和服务器端</em>交互与文件读取有关的规则，这些规则还制定了表达请求和响应时的措辞方式。协议假定客户端和服务器端能够直接交换消息。通常情况下，客户端软件需要在HTTP请求之前建立起双向连接。</strong></p>
+<hr>
+<h4 id="从Web上获取文档："><a href="#从Web上获取文档：" class="headerlink" title="从Web上获取文档："></a>从Web上获取文档：</h4><p><em>1、用户单机链接，以表明需要获取哪份文档，浏览器必须确定包含此份文档的计算机的网络地址。为此，浏览器要向本地域名服务器发送一个查询。</em></p>
+<p><em>2、一旦获得该地址，浏览器就会同指定机器的服务进程建立起连接，通常是TCP连接，为了使连接建立成功，这个指定的机器必须做好接受TCP连接的准备。</em></p>
+<p><em>3、浏览器运行HTTP的客户端版本，生成一个请求，规定文档名和可处理的文档格式。</em></p>
+<p><em>4-6、包含所请求文档的机器运行HTTP的服务器端版本。发送包含以正确格式存储的所需文档HTTP响应，以此来响应HTTP请求。</em></p>
+<p><em>7-8、用户开始浏览文档。在指定时间后，TCP连接断开。</em></p>
+<hr>
+<h4 id="从Web上获取文档：HTTP消息交换"><a href="#从Web上获取文档：HTTP消息交换" class="headerlink" title="从Web上获取文档：HTTP消息交换"></a>从Web上获取文档：HTTP消息交换</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">事件</th>
+<th style="text-align:left">消息内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">1、用户选取文档</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">2、客户端网络软件定位服务器主机，建立双向连接</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">3、HTTP客户端发送请求文档的报文</td>
+<td style="text-align:left">GET  /comm.html  HTTP/1.1</td>
+</tr>
+<tr>
+<td style="text-align:left">4、HTTP驻留程序TCP端口80侦听并解释报文</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">5、HTTP驻留程序发送给客户端结果代码和信息描述</td>
+<td style="text-align:left">HTTP /1.1 200 OK<br>DATE : Tuesday,29 Jan 2020 14:00 GMT<br>Server : Apache/ 1.3.23(UNIX)<br>Last Modified : 28 Jan 2020 14:00 GMT<br>Content-Length : 9999<br>Content_Type : text/html</td>
+</tr>
+<tr>
+<td style="text-align:left">6、HTTP驻留程序读取文件并通过TCP端口发送该文件</td>
+<td style="text-align:left">&lt; html &gt;<br>&lt; head &gt;&lt; title &gt;&lt; /title &gt;…<br>&lt; font    face=”Arial”    &gt;What is Communication? &lt; /font &gt;</td>
+</tr>
+<tr>
+<td style="text-align:left">7、客户浏览器解释HTML格式并显示文本</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">8、连接一旦空闲一段时间后，HTTP驻留程序断开本次连接</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>注：</p>
+<p>1）步骤五中，驻留程序发送状态行和所要发送信息的描述，结果<strong>代码200表示客户请求成功</strong>。接下来开始发送文件，该消息还包含服务器软件信息、文档长度（9999字节）和文档内容的格式（text/html格式）。如果请求时一幅图片，则它可能是image/gif格式。如果请求失败，服务器将发送另一个不同的结果代码，该代码通常表示失败的类型，如404表示找不到所请求的文件。</p>
+<p>2）步骤六中，HTTP驻留程序通过TCP连接来发送文件，与此同时客户端接受该文件并加以显示（步骤七）。服务器保持TCP连接为活动状态，以此接受来自客户端的其他请求。如果TCP连接空闲时间达到某一特定值，服务器将断开本次TCP连接。</p>
+<p>HTTP协议仅仅参与到两个对等进程（客户端和服务器端）之间的交互，协议假设对等进程间的交换是直接的，但事实上客户端机器和服务器端通常并不是直接相连的<strong>（两个对等进程的交互是虚拟的，通过TCP间接发生）</strong>，<strong>TCP协议提供了网络生两个机器进程间的通信服务（以正确顺序无差错传输字节流的双向连接）</strong>。</p>
+<p>每一个HTTP进程都将自己的消息插入缓冲区，TCP以信息块（<strong>段segment</strong>）的形式将缓冲区的内容传输到其他的TCP。每一段都包含有端口号和HTTP消息信息，HTTP调用低于该层的TCP所提供的服务。</p>
+<h4 id="HTTP应用协议调用TCP"><a href="#HTTP应用协议调用TCP" class="headerlink" title="HTTP应用协议调用TCP"></a>HTTP应用协议调用TCP</h4><p>当HTTP客户端软件首次需要建立TCP连接时，客户端软件即通过一系列的<strong>套接字系统调用(socket system call)</strong>建立起连接。这些调用除了在套接字系统调用时要将控制权交给操作系统内核外，其他都类似于函数调用。<em>套接字系统调用规定了特定的动作，还可能包含了套接字类型（如TCP或UDP）和地址信息等参数。</em>这样HTTP层与TCP层之间的交互就可以通过这些套接字系统调用来实现。</p>
+<h3 id="DNS查询"><a href="#DNS查询" class="headerlink" title="DNS查询"></a>DNS查询</h3><p>在HTTP执行前，客户端首先要执行一个DNS查询，以获取对应于域名的IP地址。这一步通过向DNS服务器发送消息来完成。DNS位于Internet多台机器的分布式数据库，他们可以将域名和IP地址进行转换，并提供电子邮件的路由信息。</p>
+<p>DNS解析（http是基于TCP连接的，而TCP则是通过IP地址去识别访问的），DNS 解析就是域名转化成IP地址的过程。</p>
+<h4 id="查询类型（四种DNS查询）"><a href="#查询类型（四种DNS查询）" class="headerlink" title="查询类型（四种DNS查询）"></a><strong>查询类型</strong>（四种DNS查询）</h4><p>第一种是<strong>本地解析</strong>，就是客户端可以使用缓存信息就地应答，这些缓存信息是通过以前的查询获得的；</p>
+<p>第二种是<strong>直接解析</strong>，就是直接由所设定的DNS服务器解析，使用的是该DNS服务器的资源记录缓存或者其权威回答（如果所查询的域名是该服务器管辖的）；</p>
+<p>第三种是<strong>递归查询</strong>，即设定的DNS服务器代表客户端向其他DNS服务器查询，以便完全解析该名称，并将结果返回至客户端。</p>
+<p>第四种是<strong>迭代查询</strong>，即设定的DNS服务器向客户端返回一个可以解析该域名的其他DNS服务器，客户端再继续向其他DNS服务器查询。</p>
+<h4 id="2、DNS查询和响应示例"><a href="#2、DNS查询和响应示例" class="headerlink" title="2、DNS查询和响应示例"></a>2、DNS查询和响应示例</h4><p>直接解析过程：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">事件</th>
+<th>消息内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">1、应用程序请求域名到地址的转换</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">2、解析器构成查询消息</td>
+<td>Header : OPCODE=SQUERY<br>Question :<br>QNAME=tesla.comm.toronto.edu. ,<br>           QCLASS=IN,QTYPE=A</td>
+</tr>
+<tr>
+<td style="text-align:left">3、解析器发送封装查询消息的UDP数据报</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">4、DNS服务器查询地址，做好响应准备</td>
+<td>Header : OPCODE=SQUERY,<br>        RESPONCE, AA<br>Question : QNAME=<br>tesla.comm.toronto.edu. ,<br>           QCLASS=IN,QTYPE=A<br>Answer : tesla.comm.toronto.edu. <br>86400  IN  A  128.100.11.1</td>
+</tr>
+<tr>
+<td style="text-align:left">5、DNS发送封装响应消息的UDP数据报</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>注：</p>
+<p>1）DNS消息报头的OPCODE值表明该消息为标准查询，查询的问题部分包含如下信息：QNAME指出所要翻译的域名；DNS服务器可以处理多种查询（IN表示是一个Internet地址），查询类型有QTYPE所确定（A表示要求将域名翻译为一个IP地址）。</p>
+<p>2）步骤四中服务器发回的短消息报头设置了响应和授权应答位，表明响应来自管理域名的组织。问题部分同查询的问题部分相同，应答部分包含提供IP地址的域名，紧跟其后的是生存期字段，该字段以秒为单位规定信息在客户端缓存时间的长短。接下来是QCLASS和QTYPE值，IN值再次表明为Internet地址。最后给出与域名对应的IP地址。</p>
+<p>3)<strong>DNS查询和响应消息利用用户数据报协议（UDP）提供的通信服务进行传输</strong>。UDP客户端将一个报头（header）附加到用户信息中，用以提供端口信息（DNS端口为53），UDP客户端还将结果数据块封入IP包。UDP服务是无连接的，无需建立连接即可直接发送数据报（DNS查询和响应包含短消息，从而使得UDP更加适合于传输查询和响应）。</p>
+<h3 id="SMTP和电子邮件"><a href="#SMTP和电子邮件" class="headerlink" title="SMTP和电子邮件"></a>SMTP和电子邮件</h3><p>利用简单邮件传输协议（Simple Mail Transfer Protocol,SMTP)进行电子邮件传输</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>事件</th>
+<th>消息内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1、邮件应用程序建立到本地SMTP服务器的TCP连<br>接（端口25）</td>
+<td></td>
+</tr>
+<tr>
+<td>2、SMTP驻留程序将如下消息发送到客户端，表明<br>已做好接受邮件的准备</td>
+<td>220 tesla.comm.toronto.edu ESMTP<br>Sendmail 8.9.0/8.9.0;  Thu,<br>2 Jul 1998 05:07:59 -0400  (EDT)</td>
+</tr>
+<tr>
+<td>3、客户端发送HELO消息并对自己进行标识</td>
+<td>HELO bhaskara.comm.utoronto.ca</td>
+</tr>
+<tr>
+<td>4、SMTP发送250消息，表明客户端可以继续发送</td>
+<td>250 tesla.comm.toronto.edu Hello<br>bhaskara.comm [128.100.10.9],<br>please to meet you</td>
+</tr>
+<tr>
+<td>5、客户端发送发送端的电子邮件</td>
+<td>MAIL FROM:<br>&lt; banerjea@comm.utoronto.ca &gt;</td>
+</tr>
+<tr>
+<td>6、如果成功，SMTP驻留程序将返回250消息</td>
+<td>250<br>&lt; banerjea@comm.utoronto.ca &gt;…<br>     Sender  ok</td>
+</tr>
+<tr>
+<td>7、客户端发送接收端的地址</td>
+<td>RCPT TO:  &lt; alg@nal.utoronto.ca &gt;</td>
+</tr>
+<tr>
+<td>8、返回250消息</td>
+<td>250 &lt; alg@nal.utoronto.ca &gt;…<br>     Recipient ok</td>
+</tr>
+<tr>
+<td>9、客户端发送DATA消息，请求发送邮件消息的权限</td>
+<td>DATA</td>
+</tr>
+<tr>
+<td>10、SMTP驻留程序发送消息，准许客户端发送邮件消息</td>
+<td>354 Enter mail, end with “.” on<br>     a line by itself</td>
+</tr>
+<tr>
+<td>11、客户端发送实际文本</td>
+<td>Hi AL,<br>This section on email sure needs<br>     a lot of work…</td>
+</tr>
+<tr>
+<td>12、驻留程序指示已收到待传递的消息，返回消息ID</td>
+<td>250 FAA00803 Message accepted for<br>     delivery</td>
+</tr>
+<tr>
+<td>13、客户端指示邮件会话结束</td>
+<td>QUIT</td>
+</tr>
+<tr>
+<td>14、驻留程序确认绘画结束</td>
+<td>221 tesla.comm.toronto.edu<br>     closing connection</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>在传输电子邮件消息之前，引用进程必须建立到本地SMTP服务器的TCP连接（步骤一）。此后发生的一系列数据交换都使用SMTP协议，在这些交换中，客户端识别出自身、发送方和接收方（步骤2-8）。然后，客户端将SMTP服务器所接受的消息传输到服务器，并由服务器传递出去，邮件传送任务即告完成（步骤9-12），这样就结束了这次邮件会话。本地SMTP服务重复这一过程，将消息传输给目标SMTP服务器。为了获取目标SMTP服务器的地址，本地服务器要执行一个类型为MX（邮件交换）的DNS查询。SMTP在目标机器可用时工作最有效，为此，PC环境的用户通常使用POP3从邮件服务器上获取电子邮件。</p>
+<h2 id="TCP和UDP传输层服务"><a href="#TCP和UDP传输层服务" class="headerlink" title="TCP和UDP传输层服务"></a>TCP和UDP传输层服务</h2><p>电子邮件、DNS查询与HTTP示例都展示了多个协议如何利用TCP和UDP协议所提供的通信服务进行操作，<strong>TCP和UDP协议通过IP所提供的无连接分组网络服务执行操作</strong>。</p>
+<p>UDP提供Internet上主机进程之间无连接的数据报传输，并提供端口编号，以识别每一个主机的源进程和目标进程。</p>
+<p>TCP提供了Internet上主机进程之间字节流的可靠传输，进程将字节写到缓冲区，并通过TCP跨Internet传输。</p>
+<p>事实上，在TCP和UDP的基础上已经开发出了一整套协议，因此这一点证实了分层概念的有效性。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%80%9A%E4%BF%A1%E7%BD%91/" rel="tag"># 通信网</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/29/1-2-1%E6%99%BA%E8%83%BD%E8%BD%A6%E5%9F%BA%E7%A1%80%EF%BC%88%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94FTM/" rel="prev" title="1-2-1智能车基础（一）——FTM">
+      <i class="fa fa-chevron-left"></i> 1-2-1智能车基础（一）——FTM
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#协议、服务和分层示例"><span class="nav-number">1.</span> <span class="nav-text">协议、服务和分层示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通过万维网进行浏览"><span class="nav-number">1.1.</span> <span class="nav-text">通过万维网进行浏览</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#从Web上获取文档："><span class="nav-number">1.1.1.</span> <span class="nav-text">从Web上获取文档：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从Web上获取文档：HTTP消息交换"><span class="nav-number">1.1.2.</span> <span class="nav-text">从Web上获取文档：HTTP消息交换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP应用协议调用TCP"><span class="nav-number">1.1.3.</span> <span class="nav-text">HTTP应用协议调用TCP</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS查询"><span class="nav-number">1.2.</span> <span class="nav-text">DNS查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查询类型（四种DNS查询）"><span class="nav-number">1.2.1.</span> <span class="nav-text">查询类型（四种DNS查询）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、DNS查询和响应示例"><span class="nav-number">1.2.2.</span> <span class="nav-text">2、DNS查询和响应示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SMTP和电子邮件"><span class="nav-number">1.3.</span> <span class="nav-text">SMTP和电子邮件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP和UDP传输层服务"><span class="nav-number">2.</span> <span class="nav-text">TCP和UDP传输层服务</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KZB</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KZB</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
+  </div>
+
+        
+
+
+
+
+
+
+  <script>
+  function leancloudSelector(url) {
+    url = encodeURI(url);
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.getAttribute('id'));
+      var title = visitors.getAttribute('data-flag-title');
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .then(() => {
+                leancloudSelector(url).innerText = counter.time + 1;
+              })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              })
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.getAttribute('id'));
+      });
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
+            });
+            return;
+          }
+          for (let item of results) {
+            let { url, time } = item;
+            leancloudSelector(url).innerText = time;
+          }
+          for (let url of entries) {
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=ixgE0yG1deHygJlpEDqkAGOt-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method: method,
+          headers: {
+            'X-LC-Id': 'ixgE0yG1deHygJlpEDqkAGOt-gzGzoHsz',
+            'X-LC-Key': 'TS4uwvYCAbS55vb76aWCjgX1',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>
