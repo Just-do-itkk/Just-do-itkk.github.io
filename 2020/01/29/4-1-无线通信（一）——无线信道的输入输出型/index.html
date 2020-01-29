@@ -46,20 +46,23 @@
   };
 </script>
 
-  <meta name="description" content="想要写博客主要是为了能够找一个地方来陈列我的所学所知，帮助自己搭建一个清晰的知识体系架构，知识总是越学越觉得不够。So，just do it!">
+  <meta name="description" content="先证明多径信道可以建模为一个线性时变系统，之后得到该模型的基带表示。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于我的博客">
-<meta property="og:url" content="http://yoursite.com/2019/12/27/0.0hello-world/index.html">
+<meta property="og:title" content="4.1 无线通信（一）——无线信道的输入输出型">
+<meta property="og:url" content="http://yoursite.com/2020/01/29/4-1-%E6%97%A0%E7%BA%BF%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94%E6%97%A0%E7%BA%BF%E4%BF%A1%E9%81%93%E7%9A%84%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E5%9E%8B/index.html">
 <meta property="og:site_name" content="Just do it">
-<meta property="og:description" content="想要写博客主要是为了能够找一个地方来陈列我的所学所知，帮助自己搭建一个清晰的知识体系架构，知识总是越学越觉得不够。So，just do it!">
+<meta property="og:description" content="先证明多径信道可以建模为一个线性时变系统，之后得到该模型的基带表示。">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2019-12-27T09:14:33.389Z">
-<meta property="article:modified_time" content="2020-01-21T09:48:24.049Z">
+<meta property="og:image" content="http://yoursite.com/2020/01/29/4-1-%E6%97%A0%E7%BA%BF%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94%E6%97%A0%E7%BA%BF%E4%BF%A1%E9%81%93%E7%9A%84%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E5%9E%8B/picture.JPG">
+<meta property="og:image" content="http://yoursite.com/2020/01/29/4-1-%E6%97%A0%E7%BA%BF%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94%E6%97%A0%E7%BA%BF%E4%BF%A1%E9%81%93%E7%9A%84%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E5%9E%8B/%E5%9F%BA%E5%B8%A6%E5%8F%91%E5%B0%84%E5%88%B0%E5%9F%BA%E5%B8%A6%E6%8E%A5%E6%94%B6.png">
+<meta property="article:published_time" content="2020-01-29T10:16:53.000Z">
+<meta property="article:modified_time" content="2020-01-29T10:23:35.912Z">
 <meta property="article:author" content="KZB">
-<meta property="article:tag" content="想法">
+<meta property="article:tag" content="无线通信">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/01/29/4-1-%E6%97%A0%E7%BA%BF%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94%E6%97%A0%E7%BA%BF%E4%BF%A1%E9%81%93%E7%9A%84%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E5%9E%8B/picture.JPG">
 
-<link rel="canonical" href="http://yoursite.com/2019/12/27/0.0hello-world/">
+<link rel="canonical" href="http://yoursite.com/2020/01/29/4-1-%E6%97%A0%E7%BA%BF%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94%E6%97%A0%E7%BA%BF%E4%BF%A1%E9%81%93%E7%9A%84%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E5%9E%8B/">
 
 
 <script id="page-configurations">
@@ -71,7 +74,7 @@
   };
 </script>
 
-  <title>关于我的博客 | Just do it</title>
+  <title>4.1 无线通信（一）——无线信道的输入输出型 | Just do it</title>
   
 
 
@@ -181,7 +184,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/27/0.0hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/29/4-1-%E6%97%A0%E7%BA%BF%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94%E6%97%A0%E7%BA%BF%E4%BF%A1%E9%81%93%E7%9A%84%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E5%9E%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -194,7 +197,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          关于我的博客
+          4.1 无线通信（一）——无线信道的输入输出型
         </h1>
 
         <div class="post-meta">
@@ -203,30 +206,24 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2019-12-27 17:14:33" itemprop="dateCreated datePublished" datetime="2019-12-27T17:14:33+08:00">2019-12-27</time>
+              <time title="Created: 2020-01-29 18:16:53 / Modified: 18:23:35" itemprop="dateCreated datePublished" datetime="2020-01-29T18:16:53+08:00">2020-01-29</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-21 17:48:24" itemprop="dateModified" datetime="2020-01-21T17:48:24+08:00">2020-01-21</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Search-for-meaning/" itemprop="url" rel="index">
-                    <span itemprop="name">Search for meaning</span>
+                  <a href="/categories/%E6%97%A0%E7%BA%BF%E9%80%9A%E4%BF%A1/" itemprop="url" rel="index">
+                    <span itemprop="name">无线通信</span>
                   </a>
                 </span>
             </span>
 
           
-            <span id="/2019/12/27/0.0hello-world/" class="post-meta-item leancloud_visitors" data-flag-title="关于我的博客" title="Views">
+            <span id="/2020/01/29/4-1-%E6%97%A0%E7%BA%BF%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94%E6%97%A0%E7%BA%BF%E4%BF%A1%E9%81%93%E7%9A%84%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E5%9E%8B/" class="post-meta-item leancloud_visitors" data-flag-title="4.1 无线通信（一）——无线信道的输入输出型" title="Views">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -243,9 +240,36 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <hr>
-<p>想要写博客主要是为了能够找一个地方来陈列我的所学所知，帮助自己搭建一个清晰的知识体系架构，知识总是越学越觉得不够。<strong>So，just do it!</strong><a id="more"></a><br>我在2019年平安夜搭建了这个博客，本来就一窍不通，很多的东西还要慢慢完善，不过水滴石川，绳锯木断，无论是内容还是功能都会越来越好的。<br>考试加油！！！</p>
-
+        <p><img src="/2020/01/29/4-1-%E6%97%A0%E7%BA%BF%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94%E6%97%A0%E7%BA%BF%E4%BF%A1%E9%81%93%E7%9A%84%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E5%9E%8B/picture.JPG" alt="picture"><br>先证明<strong>多径信道可以建模为一个线性时变系统</strong>，之后得到该<u>模型的基带表示</u>。<a id="more"></a></p>
+<h2 id="无线信道的线性时变系统"><a href="#无线信道的线性时变系统" class="headerlink" title="无线信道的线性时变系统"></a>无线信道的线性时变系统</h2><p>信道对于正弦输入信号$\phi (t)=cos2\pi ft$的响应为$\sum_i a_i(f,t)\phi(t-\tau_i(f,t))$，其中$a_i(f,t)$与$\phi(t-\tau_i(f,t))$分别为从发射机到接收机的第$i$条路径在时刻$t$的<strong>总衰减</strong>和<strong>传播时延</strong>。</p>
+<p>总衰减：发射天线与接受天线方向图、反射体性质以及从发射天线到反射体和从反射体到接受天线的函数等因子的成乘积。</p>
+<p>衰减与传播时延通常是<u>频率的慢变函数</u>，这类波动是由<strong>随时间变化的路径长度</strong>和\phi(t-\tau_i(f,t))引起的。我们<strong>主要关注的是在带宽相对于载波频率非常窄的频带上的信号发射</strong>，在这样的频带范围内可以忽略对于频率的依赖性。但是<strong>不同路径存在着不同的时延，所以总的信道响应是随频率变化的</strong>。</p>
+<p>所以假定$a_i(f,t)$与$\phi(t-\tau_i(f,t))$与频率无关的话，利用叠加性原理可以将输入输出关系推广到带宽非零的任意输入$x(t)$:</p>
+<script type="math/tex; mode=display">
+y(t)=\sum_ia_i(t)x(t-\tau_i(t))</script><p>这个式子表示的<strong>信道为线性信道</strong>，可以用在$t$时刻对($t-\tau$)时刻发射冲激的响应$h(\tau,t)$来表示。则输入输出关系可以表示为：</p>
+<script type="math/tex; mode=display">
+y(t)=\int_{-\infty}^{\infty}h(\tau,t)x(t-\tau)d\tau</script><p>所以可以由上面的两个式子得到，衰落多径信道的冲击响应为：</p>
+<script type="math/tex; mode=display">
+h(\tau,t)=\sum_ia_i(t)\delta(\tau-\tau_i(t))</script><p>这表示了<u>移动用户、任意移动反射体与吸收体</u>以及<u>求解麦克斯韦方程时所有复杂问题的影响</u>，并最终简化为<u>发射天线与接受天线之间的输入/输出关系</u><strong>（线性时变信道滤波器的冲击响应）</strong>。</p>
+<p>时变冲激响应$h(\tau,t)的时变频率响应为：</p>
+<script type="math/tex; mode=display">
+H(f;t):=\int_{-\infty}^{\infty}h(\tau,t)e^{-j2\pi f\tau}d\tau=\sum_ia_i(t)e^{-j2\pi f\tau_i(t)}</script><p>解释$H(f;t)$的一种方法是<strong>将系统看作时间$t$的慢变函数</strong>，且各个固定时刻的频率响应为$H(f;t)$，$h(\tau,t)$看作系统在固定时刻$t$的冲激响应。<strong>[这是考虑大量躲进衰落信道的一种合理的、有用的方法，原因是信道变化的时间尺度通常比固定时刻冲激响应的时延扩展（即记忆量）要长的多。将具有这种特性的衰落信道称为欠扩展信道(underspread channel)。—-欠扩展信道的概念]</strong></p>
+<p>在发射机、接收机与周围环境均稳定的特殊情况下，衰减$a_i(t)$和传播时延$\tau_i(t)$与时间$t$无关，即可表示为一般的线性时不变信道，冲激响应为：</p>
+<script type="math/tex; mode=display">
+h(\tau)=\sum_ia_i\delta(\tau-\tau_i)</script><h2 id="基带等效模型"><a href="#基带等效模型" class="headerlink" title="基带等效模型"></a>基带等效模型</h2><p><em>从通信系统设计的角度讲，建立系统的基带等效模型表示是十分有用的，因为编码/译码、调制/解调以及同步等绝大多数的处理实际上都是在基带完成的。</em></p>
+<h3 id="信号基带等效表示的定义"><a href="#信号基带等效表示的定义" class="headerlink" title="信号基带等效表示的定义"></a>信号基带等效表示的定义</h3><p>考虑实信号$s(t)$，其傅里叶变换为$S(f)$，带宽限制在$[f_c-W/2,f_c+W/2]$之内，且$W&lt;2f_c$。定义其复基带等效(complex baseband equivalent)$s_b(t)$为具有如下傅里叶变换的信号：</p>
+<script type="math/tex; mode=display">
+S_b(f)=\left\{ \begin{aligned} &\sqrt2(f+f_c)&   &f+f_c>0\\&0&  &f+f_c\leq0\end{aligned} \right.</script><p><strong>由于$s(t)$是实信号，所以其傅里叶变换满足$S(f)=S^*(-f)$</strong>，这说明$s_b(t)$中包含了与$s(t)$完全相同的信息。因子$\sqrt2$可以任意选取，这里是为了使得$s_b(t)$与$s(t)$的归一化能量相同。$s_b(t)$的带宽限制在$[-W/2,W/2]$之内。</p>
+<p>为了由$s_b(t)$重构$s(t)$，对$\sqrt2S(f)=S_b(f-f_c)+S_b^*(-f-f_c)$取傅里叶逆变换得</p>
+<script type="math/tex; mode=display">
+s(t)=\frac 1{\sqrt2}[s_b(t)e^{j2\pi f_ct}+s_b^*(t)e^{-j2\pi f_ct}]=\sqrt2\Re[s_b(t)e^{j2\pi f_ct}]</script><p>等效基带信号表示为</p>
+<script type="math/tex; mode=display">
+y_b(t)=\sum_ia_i^b(t)x_b(t-\tau_i(t))</script><p>其中$a_i^b(t):=a_i(t)e^{-j2\pi f_c\tau_i(t)}$。信道表达式的输入输出关系也是线性时变系统，并且基带等效冲激响应为：</p>
+<script type="math/tex; mode=display">
+h_b(\tau,t)=\sum_ia_i^b(t)\delta(\tau-\tau_i(t))</script><p>从时域来说，基带输出为各路径基带输入的时延副本之和，其中第$i$项的幅度为给定路径上的响应幅度；其变化缓慢，通常间隔几秒钟甚至更长的时间才能出现重大的变化。当路径变化$\frac 1{4f_c}$或者等效的将路径长度变化四分之一波长即$\frac c{4f_c}$时，相位改变$\frac \pi 2$(出现重大变化)，如果路径长度以速度$v$变化，则相位变化$\frac \pi 2$所需的时间为$\frac c{4f_cv}$。频率为$f$时的多普勒频移D为$\frac {fv}c$，对于窄带通信信道而言$f\approx f_c$，此时相位变化$\frac \pi 2$所需的时间为$\frac 1{4D}$。</p>
+<p>从基带发射信号$x_b(t)$到基带接受信号$y_b(t)$的系统框图：</p>
+<p><img src="/2020/01/29/4-1-%E6%97%A0%E7%BA%BF%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94%E6%97%A0%E7%BA%BF%E4%BF%A1%E9%81%93%E7%9A%84%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E5%9E%8B/基带发射到基带接收.png" alt="基带发射信号到基带接收信号的系统框图"></p>
+<h2 id="离散时间基带模型"><a href="#离散时间基带模型" class="headerlink" title="离散时间基带模型"></a>离散时间基带模型</h2><h2 id="加性白噪声"><a href="#加性白噪声" class="headerlink" title="加性白噪声"></a>加性白噪声</h2>
     </div>
 
     
@@ -254,7 +278,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%83%B3%E6%B3%95/" rel="tag"># 想法</a>
+              <a href="/tags/%E6%97%A0%E7%BA%BF%E9%80%9A%E4%BF%A1/" rel="tag"># 无线通信</a>
           </div>
 
         
@@ -262,11 +286,11 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2019/12/31/1.1%E6%99%BA%E8%83%BD%E8%BD%A6%E5%B0%8F%E8%AE%B0/" rel="next" title="智能车小记">
-      智能车小记 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/01/29/3-1%E9%80%9A%E4%BF%A1%E7%BD%911/" rel="prev" title="通信网（1）——应用与分层的体系结构">
+      <i class="fa fa-chevron-left"></i> 通信网（1）——应用与分层的体系结构
     </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -326,6 +350,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#无线信道的线性时变系统"><span class="nav-number">1.</span> <span class="nav-text">无线信道的线性时变系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基带等效模型"><span class="nav-number">2.</span> <span class="nav-text">基带等效模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#信号基带等效表示的定义"><span class="nav-number">2.1.</span> <span class="nav-text">信号基带等效表示的定义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#离散时间基带模型"><span class="nav-number">3.</span> <span class="nav-text">离散时间基带模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加性白噪声"><span class="nav-number">4.</span> <span class="nav-text">加性白噪声</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -528,6 +553,54 @@
   
 
   
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
 
   
 
