@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next-my.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="数字数据的产生可以通过对模拟信号进行抽样，量化编码的方式产生；也可以直接由离散的信息源输出。在这一章主要是讨论数字数据在基带信道的传输问题，数字数据的特点是具有很宽的频谱且其中低频的分量对于数字数据来说承载了很大一部分的信息量。数字基带信道的基本要求是带宽足以容纳数据流基本的频谱分量（由于基带传输，所以是一个低通信道）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2-4-1通信原理——基带脉冲传输">
+<meta property="og:url" content="http://yoursite.com/2020/02/11/2-4-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E5%9F%BA%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/index.html">
+<meta property="og:site_name" content="Just do it">
+<meta property="og:description" content="数字数据的产生可以通过对模拟信号进行抽样，量化编码的方式产生；也可以直接由离散的信息源输出。在这一章主要是讨论数字数据在基带信道的传输问题，数字数据的特点是具有很宽的频谱且其中低频的分量对于数字数据来说承载了很大一部分的信息量。数字基带信道的基本要求是带宽足以容纳数据流基本的频谱分量（由于基带传输，所以是一个低通信道）。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/02/11/2-4-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E5%9F%BA%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/141_1.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/11/2-4-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E5%9F%BA%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/141_2.png">
+<meta property="article:published_time" content="2020-02-11T15:27:03.000Z">
+<meta property="article:modified_time" content="2020-02-11T15:39:05.029Z">
+<meta property="article:author" content="KZB">
+<meta property="article:tag" content="通信原理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/02/11/2-4-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E5%9F%BA%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/141_1.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/02/11/2-4-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E5%9F%BA%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>2-4-1通信原理——基带脉冲传输 | Just do it</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just do it</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">吉良吉影想过平静的生活</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home#首页"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags#标签"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th#分类"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive#归档"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/11/2-4-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E5%9F%BA%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KZB">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just do it">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2-4-1通信原理——基带脉冲传输
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-02-11 23:27:03 / Modified: 23:39:05" itemprop="dateCreated datePublished" datetime="2020-02-11T23:27:03+08:00">2020-02-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86/" itemprop="url" rel="index">
+                    <span itemprop="name">通信原理</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/02/11/2-4-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E5%9F%BA%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/" class="post-meta-item leancloud_visitors" data-flag-title="2-4-1通信原理——基带脉冲传输" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>数字数据的产生可以通过对模拟信号进行抽样，量化编码的方式产生；也可以直接由离散的信息源输出。在这一章主要是讨论数字数据在基带信道的传输问题，数字数据的特点是具有很宽的频谱且其中低频的分量对于数字数据来说承载了很大一部分的信息量。数字基带信道的基本要求是带宽足以容纳数据流基本的频谱分量（由于基带传输，所以是一个低通信道）。<a id="more"></a></p>
+<p>在讨论数字基带传输这个系统时，主要还是分析传输信道中影响传输可靠性的因素：一个时信道噪声对于传输准确率的影响，另一个时由于传输信道的弥散特性导致的码间干扰。</p>
+<h2 id="知识总结"><a href="#知识总结" class="headerlink" title="知识总结"></a>知识总结</h2><h3 id="信道噪声的解决方案——匹配滤波器"><a href="#信道噪声的解决方案——匹配滤波器" class="headerlink" title="信道噪声的解决方案——匹配滤波器"></a>信道噪声的解决方案——匹配滤波器</h3><p>  基本结论：匹配滤波器是检测脉冲的最佳检测器。匹配滤波器的冲击响应和要检测的脉冲信号是相匹配的。在这个情况下，经过一系列的推导，得出的匹配滤波器的时域表达式体现了匹配滤波器是输入信号的时域上的反转和延时（性质一）；其次在实际中匹配滤波器可以和相关器等价（性质二）；在输入信号为矩形脉冲时，积分器可作为检测时的最优检测器（性质三）；最后对于匹配滤波器的输出信号来说，其峰值脉冲信噪比存在最大值$\eta=2E/N_0$，这说明脉冲信号通过匹配滤波器后的输出信号的噪声性能只与输入信号的能量以及噪声的功率谱密度有关，跟脉冲信号的波形没有关系，换句话说匹配滤波器去除了峰值脉冲信噪比对输入信号的波形的依赖性。值得注意的是这个$\eta$是一个没有量纲的值，因为分母为能量，分子为噪声功率谱密度。（性质四）</p>
+<h3 id="信道噪声引起的比特差错计算"><a href="#信道噪声引起的比特差错计算" class="headerlink" title="信道噪声引起的比特差错计算"></a>信道噪声引起的比特差错计算</h3><p>在讨论如何计算噪声引起的系统检测的差错概率时，我们设定的场景时：以匹配滤波器作为加性高斯白噪声下的最优检测器的二进制PCM系统，线路码为双极性不归零码。接收机的作用是在每个符号间隔下判定传输的信号是1还是0。从统计的角度通过平均的差错概率来衡量出现传输差错的可能性。</p>
+<p>整体的思想：</p>
+<p>1） 出现差错只有两种可能性：把0判决为1；把1判决为0；</p>
+<p>2） 将接收机抽样的输出看成是一个随机的变量Y，描述其统计特性我们就需要知道随机变量的样本均值和方差，先假设发送的符号为0，在这个情况下接受机接收到的信号就是$-A+w(t)$，这个信号显然是服从一个均值为的$-A$高斯分布（高斯分布的性质），方差通过计算可以知道$\sigma_Y^2=\frac{N_0}{2T_b}$。对于一个高斯分布来说，我们既然已经知道了它的均值和方差了，那么它的分布特性就已经完全被我们掌握，这个时候根据判决门限$\lambda$就可以列出条件概率密度函数，差错概率即可算出。</p>
+<p>3） 引入互补误差函数来表示最终的差错概率。</p>
+<script type="math/tex; mode=display">
+p_{10}=\frac12erfc(\frac{a+\lambda}{\sqrt{N_0/T_b}}),p_{01}=\frac12erfc(\frac{a-\lambda}{\sqrt{N_0/T_b}})</script><script type="math/tex; mode=display">
+p_e=p_0p_{10}+p_1p_{01}=\frac{p_0}2erfc(\frac{a+\lambda}{\sqrt{N_0/T_b}})+\frac{p_1}2erfc(\frac{a-\lambda}{\sqrt{N_0/T_b}})</script><p>4） 对于这个简单的系统来说，最优的差错门限是$\lambda=0$，此时</p>
+<script type="math/tex; mode=display">
+p_e=\frac12erfc(\frac A{\sqrt{N_0/T_b}})=\frac12erfc(\sqrt{\frac {E_b}{N_0}})</script><p>由此根据互补误差函数的性质可以知道平均符号差错概率只与发射信号和噪声功率谱密度的比有关系，且为负相关。且根据互补误差函数的上界公式可以确定平均误差函数的最大值：</p>
+<script type="math/tex; mode=display">
+erfc(u)<\frac{exp(-u^2)}{\sqrt\pi u}\to p_e<\frac{exp(-E_b/N_0)}{2\sqrt{\pi E_b/N_0} }</script><p>这也体现了信噪比很小的增加就可以实现很棒的误差概率。</p>
+<p>  其实在这里对于二进制PCM的符号差错概率是可以借鉴的，我们在第六章里经常会对着星座图计算各种调制的差错概率，在区分清楚比特差错概率和符号差错概率的情况下，其实直接用这里的结论就很好，把这里的$E_b$理解为信息点的间隔。</p>
+<h3 id="码间干扰的解决方案一——升余弦谱"><a href="#码间干扰的解决方案一——升余弦谱" class="headerlink" title="码间干扰的解决方案一——升余弦谱"></a>码间干扰的解决方案一——升余弦谱</h3><p>  码间干扰就是说相邻的码元对于正在检测的码元存在一定的影响，这个影响会影响传输信息的准确性。而引发码间干扰的主要原因就是传输信道的弥散性，什么弥散性？我的理解就是传输信道的传输函数频率响应和理想的低通滤波函数的频率响应相比存在差距，导致脉冲信号在通过传输信道后存在频谱的叠加，表现在时域上就是相邻码元的影响。</p>
+<p>  既然是传输信道的问题，那么我们可以通过改善信道的频率响应特性来尽可能的降低码间干扰的影响——这就是升余弦谱的根本思想。首先要认识理想的奈奎斯特信道——一个可以保证没有码间干扰产生的信道，我们关注的是它的带宽，$B_T=W=\frac 1{2T_b}$，其中的$T_b$是每个码元持续的时间，信号速率与码元保持时间的关系是（此$R_b=\frac 1{T_b}$时的信号速率又称奈奎斯特速率），表示每秒传输的比特数，单位为bps。理想奈奎斯特信道的幅频响应的特点是在的频$2nW$率点处的值为零，这样就可以保证相邻比特在频率上的影响最低。（抽样下对应的频谱就是以抽样间隔为参数的搬移）</p>
+<p>  理想就是告诉我们在现实中没有办法实现，但是根据理想我们可以进行折中。升余弦谱就是通过增大信道的带宽来实现类似于理想奈奎斯特信道特性的方法。此时的信道带宽为$B_T=W(1+\alpha)$，$W$为奈奎斯特带宽，$\alpha$为滚降因子，$\alpha$越大信道带宽越大。升余弦频谱的特点是滚降部分关于$(W,\frac12)$中心对称（在脉冲的$1/2$幅度处测量得到的脉冲宽度正好等于比特持续的时间$T_b$）。当滚降因子等于1时，时间响应函数具有额外的过零点，这有益于从接收信号中提取定时信号来进行时间同步，代价就是信道带宽为奈奎斯特信道带宽的两倍。</p>
+<h3 id="码间干扰的解决方案二——相关电平编码"><a href="#码间干扰的解决方案二——相关电平编码" class="headerlink" title="码间干扰的解决方案二——相关电平编码"></a>码间干扰的解决方案二——相关电平编码</h3><p>其实除了调试合适的信道响应来降低码间干扰外，我们也可以通过人为的加入码间干扰的方式来实现接近奈奎斯特速率的信号传输，使得每秒传输的信息可以达到2W个符号，由于这种码间干扰是人为加入的，相比于信道弥散特性产生的码间干扰来说更好控制。</p>
+<p>  提到的相关电平编码方法有双二进制信号传输、加入预编码（模二加，在相关编码之前）的双二进制信号传输、改进（去除直流分量）的双二进制信号。</p>
+<h3 id="基带M进制PAM传输"><a href="#基带M进制PAM传输" class="headerlink" title="基带M进制PAM传输"></a>基带M进制PAM传输</h3><p>  在考量传输的性能时，在这里提到主要的指标如下：</p>
+<p>  1）信号速率$R$</p>
+<p>  2）比特传输速率$R_b$</p>
+<p>  3）信号持续时间$T$</p>
+<p>  4）比特持续时间$T_b$</p>
+<p>  5）传输带宽$B_T$</p>
+<p>  5）带宽有效率$\rho$</p>
+<p>  对于M进制的传输来说，有以下的关系：</p>
+<script type="math/tex; mode=display">
+R=\frac1T,R_b=Rlog_2M,T=T_blog_2M</script><script type="math/tex; mode=display">
+R_b=Rlog_2M,T=T_blog_2M</script><script type="math/tex; mode=display">
+R_b=\frac 1{T_B}=\frac1Tlog_2M</script><script type="math/tex; mode=display">
+B_T=\frac1{2T}(奈奎斯特带宽)</script><script type="math/tex; mode=display">
+\rho=\frac{R_b}{B_T}=\frac{Rlog_2M}{R/2}=2log_2M</script><h2 id="Matlab仿真"><a href="#Matlab仿真" class="headerlink" title="Matlab仿真"></a>Matlab仿真</h2><h3 id="数字基带信号接收示意"><a href="#数字基带信号接收示意" class="headerlink" title="数字基带信号接收示意"></a>数字基带信号接收示意</h3><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%数字基带信号接收示意</span></span><br><span class="line">clear all;</span><br><span class="line">close all;</span><br><span class="line"> </span><br><span class="line">N =<span class="number">100</span>;</span><br><span class="line">N_sample=<span class="number">8</span>;     <span class="comment">%每码元抽样点数</span></span><br><span class="line">Ts=<span class="number">1</span>;</span><br><span class="line">dt = Ts/N_sample;</span><br><span class="line">t=<span class="number">0</span>:dt:(N*N_sample<span class="number">-1</span>)*dt;</span><br><span class="line"> </span><br><span class="line">gt = <span class="built_in">ones</span>(<span class="number">1</span>,N_sample);   <span class="comment">%数字基带波形</span></span><br><span class="line">d = <span class="built_in">sign</span>(<span class="built_in">randn</span>(<span class="number">1</span>,N));    <span class="comment">%输入数字序列</span></span><br><span class="line">a = sigexpand(d,N_sample); </span><br><span class="line">st = conv(a,gt);         <span class="comment">%数字基带信号</span></span><br><span class="line"> </span><br><span class="line">ht1 = gt;</span><br><span class="line">rt1 = conv(st,ht1);</span><br><span class="line"> </span><br><span class="line">ht2 = <span class="number">5</span>*sinc(<span class="number">5</span>*(t<span class="number">-5</span>)/Ts);</span><br><span class="line">rt2 = conv(st,ht2);</span><br><span class="line"> </span><br><span class="line"><span class="built_in">figure</span>(<span class="number">1</span>)</span><br><span class="line">subplot(<span class="number">321</span>)</span><br><span class="line"><span class="built_in">plot</span>( t,st(<span class="number">1</span>:<span class="built_in">length</span>(t)) );</span><br><span class="line">axis([<span class="number">0</span> <span class="number">20</span> <span class="number">-1.5</span> <span class="number">1.5</span>]); ylabel(<span class="string">'输入双极性NRZ数字基带波形'</span>);</span><br><span class="line">subplot(<span class="number">322</span>)</span><br><span class="line">stem( t,a);</span><br><span class="line">axis([<span class="number">0</span> <span class="number">20</span> <span class="number">-1.5</span> <span class="number">1.5</span>]); ylabel(<span class="string">'输入数字序列'</span>)</span><br><span class="line"> </span><br><span class="line">subplot(<span class="number">323</span>)</span><br><span class="line"><span class="built_in">plot</span>( t,[<span class="number">0</span> rt1(<span class="number">1</span>:<span class="built_in">length</span>(t)<span class="number">-1</span>)]/<span class="number">8</span> );</span><br><span class="line">axis([<span class="number">0</span> <span class="number">20</span> <span class="number">-1.5</span> <span class="number">1.5</span>]);ylabel(<span class="string">'方波滤波后输出'</span>);</span><br><span class="line">subplot(<span class="number">324</span>)</span><br><span class="line">dd = rt1(N_sample:N_sample:<span class="keyword">end</span>);</span><br><span class="line">ddd= sigexpand(dd,N_sample);</span><br><span class="line">stem( t,ddd(<span class="number">1</span>:<span class="built_in">length</span>(t))/<span class="number">8</span> );</span><br><span class="line">axis([<span class="number">0</span> <span class="number">20</span> <span class="number">-1.5</span> <span class="number">1.5</span>]);ylabel(<span class="string">'方波滤波后抽样输出'</span>);</span><br><span class="line"> </span><br><span class="line">subplot(<span class="number">325</span>)</span><br><span class="line"><span class="built_in">plot</span>(t<span class="number">-5</span>, [<span class="number">0</span> rt2(<span class="number">1</span>:<span class="built_in">length</span>(t)<span class="number">-1</span>)]/<span class="number">8</span> );</span><br><span class="line">axis([<span class="number">0</span> <span class="number">20</span> <span class="number">-1.5</span> <span class="number">1.5</span>]);</span><br><span class="line">xlabel(<span class="string">'t/Ts'</span>); ylabel(<span class="string">'理想低通滤波后输出'</span>);</span><br><span class="line">subplot(<span class="number">326</span>)</span><br><span class="line">dd = rt2(N_sample<span class="number">-1</span>:N_sample:<span class="keyword">end</span>);</span><br><span class="line">ddd=sigexpand(dd,N_sample);</span><br><span class="line">stem( t<span class="number">-5</span>,ddd(<span class="number">1</span>:<span class="built_in">length</span>(t))/<span class="number">8</span> );</span><br><span class="line">axis([<span class="number">0</span> <span class="number">20</span> <span class="number">-1.5</span> <span class="number">1.5</span>]); </span><br><span class="line">xlabel(<span class="string">'t/Ts'</span>); ylabel(<span class="string">'理想低通滤波后抽样输出'</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/02/11/2-4-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E5%9F%BA%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/141_1.png" alt="img"></p>
+<h3 id="部分响应信号眼图示意"><a href="#部分响应信号眼图示意" class="headerlink" title="部分响应信号眼图示意"></a>部分响应信号眼图示意</h3><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%部分响应信号眼图示意</span></span><br><span class="line">clear all; close all;</span><br><span class="line">Ts=<span class="number">1</span>;</span><br><span class="line">N_sample=<span class="number">16</span>;</span><br><span class="line">eye_num = <span class="number">11</span>;</span><br><span class="line"> </span><br><span class="line">N_data=<span class="number">1000</span>;</span><br><span class="line"> </span><br><span class="line">dt = Ts/N_sample;</span><br><span class="line">t = <span class="number">-5</span>*Ts:dt:<span class="number">5</span>*Ts;</span><br><span class="line"> </span><br><span class="line"><span class="comment">%产生双极性数字信号</span></span><br><span class="line">d = <span class="built_in">sign</span>(<span class="built_in">randn</span>(<span class="number">1</span>,N_data));</span><br><span class="line">dd= sigexpand(d,N_sample);</span><br><span class="line"><span class="comment">%部分响应系统冲击响应</span></span><br><span class="line">ht = sinc((t+<span class="built_in">eps</span>)/Ts)./(<span class="number">1</span>- (t+<span class="built_in">eps</span>)./Ts);</span><br><span class="line">ht( <span class="number">6</span>*N_sample+<span class="number">1</span> ) = <span class="number">1</span>;</span><br><span class="line">st = conv(dd,ht);</span><br><span class="line">tt = <span class="number">-5</span>*Ts:dt:(N_data+<span class="number">5</span>)*N_sample*dt-dt;</span><br><span class="line"> </span><br><span class="line"><span class="built_in">figure</span>(<span class="number">1</span>)</span><br><span class="line">subplot(<span class="number">211</span>);</span><br><span class="line"><span class="built_in">plot</span>(tt,st);</span><br><span class="line">axis([<span class="number">0</span> <span class="number">20</span> <span class="number">-3</span> <span class="number">3</span>]);xlabel(<span class="string">'t/Ts'</span>);ylabel(<span class="string">'部分响应基带信号'</span>);</span><br><span class="line">subplot(<span class="number">212</span>)</span><br><span class="line"><span class="comment">%画眼图</span></span><br><span class="line">ss=<span class="built_in">zeros</span>(<span class="number">1</span>,eye_num*N_sample);</span><br><span class="line">ttt = <span class="number">0</span>:dt:eye_num*N_sample*dt-dt;</span><br><span class="line"><span class="keyword">for</span> k=<span class="number">5</span>:<span class="number">50</span></span><br><span class="line">    ss = st(k*N_sample+<span class="number">1</span>:(k+eye_num)*N_sample);</span><br><span class="line">    drawnow;</span><br><span class="line">    <span class="built_in">plot</span>(ttt,ss); <span class="built_in">hold</span> on;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">%plot(ttt,ss);</span></span><br><span class="line">xlabel(<span class="string">'t/Ts'</span>);ylabel(<span class="string">'部分响应信号眼图'</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/02/11/2-4-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E5%9F%BA%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/141_2.png" alt="img"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86/" rel="tag"># 通信原理</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/31/2-3-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E8%84%89%E5%86%B2%E8%B0%83%E5%88%B6/" rel="prev" title="通信原理（三）——脉冲调制">
+      <i class="fa fa-chevron-left"></i> 通信原理（三）——脉冲调制
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#知识总结"><span class="nav-number">1.</span> <span class="nav-text">知识总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#信道噪声的解决方案——匹配滤波器"><span class="nav-number">1.1.</span> <span class="nav-text">信道噪声的解决方案——匹配滤波器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#信道噪声引起的比特差错计算"><span class="nav-number">1.2.</span> <span class="nav-text">信道噪声引起的比特差错计算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#码间干扰的解决方案一——升余弦谱"><span class="nav-number">1.3.</span> <span class="nav-text">码间干扰的解决方案一——升余弦谱</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#码间干扰的解决方案二——相关电平编码"><span class="nav-number">1.4.</span> <span class="nav-text">码间干扰的解决方案二——相关电平编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基带M进制PAM传输"><span class="nav-number">1.5.</span> <span class="nav-text">基带M进制PAM传输</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Matlab仿真"><span class="nav-number">2.</span> <span class="nav-text">Matlab仿真</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数字基带信号接收示意"><span class="nav-number">2.1.</span> <span class="nav-text">数字基带信号接收示意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部分响应信号眼图示意"><span class="nav-number">2.2.</span> <span class="nav-text">部分响应信号眼图示意</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KZB</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KZB</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
+  </div>
+
+        
+
+
+
+
+
+
+  <script>
+  function leancloudSelector(url) {
+    url = encodeURI(url);
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.getAttribute('id'));
+      var title = visitors.getAttribute('data-flag-title');
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .then(() => {
+                leancloudSelector(url).innerText = counter.time + 1;
+              })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              })
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.getAttribute('id'));
+      });
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
+            });
+            return;
+          }
+          for (let item of results) {
+            let { url, time } = item;
+            leancloudSelector(url).innerText = time;
+          }
+          for (let url of entries) {
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=ixgE0yG1deHygJlpEDqkAGOt-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method: method,
+          headers: {
+            'X-LC-Id': 'ixgE0yG1deHygJlpEDqkAGOt-gzGzoHsz',
+            'X-LC-Key': 'TS4uwvYCAbS55vb76aWCjgX1',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>
