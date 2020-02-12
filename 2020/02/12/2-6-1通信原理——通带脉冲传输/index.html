@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next-my.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="这一章的内容是在最佳接收机的背景下进行讨论的，主要是讨论数字信号通过对特定的正弦载波的各种参量的调制实现的各种数字调制技术在AWGN信道之中的性能特点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通信原理（六）——通带脉冲传输">
+<meta property="og:url" content="http://yoursite.com/2020/02/12/2-6-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E9%80%9A%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/index.html">
+<meta property="og:site_name" content="Just do it">
+<meta property="og:description" content="这一章的内容是在最佳接收机的背景下进行讨论的，主要是讨论数字信号通过对特定的正弦载波的各种参量的调制实现的各种数字调制技术在AWGN信道之中的性能特点。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/02/12/2-6-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E9%80%9A%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/12/2-6-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E9%80%9A%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/12/2-6-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E9%80%9A%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/12/2-6-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E9%80%9A%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/4.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/12/2-6-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E9%80%9A%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/5.png">
+<meta property="article:published_time" content="2020-02-12T07:11:55.000Z">
+<meta property="article:modified_time" content="2020-02-12T07:44:57.702Z">
+<meta property="article:author" content="KZB">
+<meta property="article:tag" content="通信原理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/02/12/2-6-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E9%80%9A%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/1.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/02/12/2-6-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E9%80%9A%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>通信原理（六）——通带脉冲传输 | Just do it</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just do it</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">吉良吉影想过平静的生活</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home#首页"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags#标签"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th#分类"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive#归档"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/12/2-6-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E9%80%9A%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="KZB">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just do it">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          通信原理（六）——通带脉冲传输
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-02-12 15:11:55 / Modified: 15:44:57" itemprop="dateCreated datePublished" datetime="2020-02-12T15:11:55+08:00">2020-02-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86/" itemprop="url" rel="index">
+                    <span itemprop="name">通信原理</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/02/12/2-6-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E9%80%9A%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/" class="post-meta-item leancloud_visitors" data-flag-title="通信原理（六）——通带脉冲传输" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这一章的内容是在最佳接收机的背景下进行讨论的，主要是讨论数字信号通过对特定的正弦载波的各种参量的调制实现的各种数字调制技术在AWGN信道之中的性能特点。<a id="more"></a></p>
+<h2 id="知识总结"><a href="#知识总结" class="headerlink" title="知识总结"></a>知识总结</h2><h3 id="分析通带数据传输的方法"><a href="#分析通带数据传输的方法" class="headerlink" title="分析通带数据传输的方法"></a>分析通带数据传输的方法</h3><p>数字通带传输是在特定的频带传输数字信号的技术。通过特定频率的正弦波作为载波，用数字信号调制幅度、相位、频率分别对应着ASK、PSK、FSK，这些都是对正弦载波的单一参量进行调制，如果对正弦载波的多个参量同时进行调制就可以有联合键控的调制方法，如相位频率联合调制（APK），正交幅度调制就是典型的相位频率联合调制。</p>
+<p>首先在分析一系列的数字通带调制前，对调制的方法进行分类，从系统的接受机是否存在相位恢复电路的角度，数字调制技术可以分为相干和非相干；从调制的线性角度可知M进制PSK和M进制QAM是两种线性调制，M进制FSK是一种非线性调制。对于PSK来说不存在非相干的说法，应为非相干意味着失去了相位信息，这对于PSK来说是不可接受的。</p>
+<p>在分析各种数字调制技术时，了解其调制特点的关键是发射信号集表达式、基底函数、信号星座图，可以考量的参量有：差错概率（包括误比特率和平均符号差错概率）、功率谱密度，带宽效率。（信道假设统一为理想的AWGN信道模型。）</p>
+<h3 id="相干PSK"><a href="#相干PSK" class="headerlink" title="相干PSK"></a>相干PSK</h3><p>  相干PSK讨论了BPSK、QPSK和M进制PSK。</p>
+<p>  PSK是通过传输的数字符号对载波的相位进行调制，所以和FSK一样已调波具有恒定的包络，这使得其对于幅度非线性具有不敏感的特点，相比于ASK适合在非线性信道进行传输。</p>
+<p>  BPSK为二进制，QPSK为四进制，在调制的过程中，除BPSK是在一维信号空间中进行表示的外，其他的PSK都是在二维信号空间表示信号星座图的，每个星座点的模值平方为每个发送符号的能量，且PSK保证了所有信号的发射能量是相等的，可以说PSK的星座点都在一个以原点为半径，信号能量的1/2次幂为半径的圆上。</p>
+<p>  PSK调制，在发射信号的信噪比保持不变的前提下，保证每个符号的发射能量相同，随着M进制数越大，它的带宽利用率就越大，但是平均符号差错概率会随之增大，所以说带宽的有效性和传输的可靠性之间是存在矛盾的。</p>
+<h3 id="M进制QAM"><a href="#M进制QAM" class="headerlink" title="M进制QAM"></a>M进制QAM</h3><p>  M进制的QAM是一种特殊的相位幅度联合调制方法，我发现它有着和PSK一样的，在这个情况下，其实在性能上可以和PSK进行一番比较，当发射信号的平均能量相同时QAM是要比PSK好的，因为QAM调制的性质决定了它的最小星座点间隔要比同等情况下的PSK大，这样的话平均符号差错概率就会相对PSK小，可靠性增强。</p>
+<p>  M进制QAM的平均符号差错概率近似为$\sqrt M$进制PAM的2倍，$\sqrt M$进制PAM的符号差错概率为$P_e=(1-\frac1{\sqrt M})erfc(\sqrt{\frac E {N_0}})$。</p>
+<h3 id="相干FSK"><a href="#相干FSK" class="headerlink" title="相干FSK"></a>相干FSK</h3><p>  讨论相干BFSK、MSK、M进制FSK。</p>
+<p>  FSK为频移键控，顾名思义是通过符号来调节载波的频率，实现信息的传递。每一种发射信号对应一种符号，而不同的发射信号之间的差异是频率不相同。这样看来，在一个符号持续时间内的发射信号的周期会是不一样的，我们应当保证可以选择的载波频率是$\frac1T$的整数倍，这样可以保证相邻的码元调制后不会出现奇怪的相位。</p>
+<p>  这里存在一个相位连续性的问题，MSK是一种为了保持传输过程中不同码元的相位保持连续的一种调制方法，主要的特点是在保证最小的频率差值的两个发射信号在传输的过程中对于同一个符号（“1”或“0”）是存在两种选择的，当然选择指的是初始相位和在$T_b$时刻的相位，但是都遵循一个规律就是对于符号“1”$T_b$处相位相比初始相位加$\frac\pi 2$，符号“0”$T_b$处相位相比初始相位减$\frac\pi 2$。在绘制MSK波形图时最需要注意的就是相位的连接。</p>
+<p>  对于M进制的FSK来说，随着M进制数的增大，表示星座图的坐标维度会逐渐增大，M进制FSK的星座图时M维的。M进制FSK的带宽近似值为$B=\frac M{2T}$，所以进制数越大那么带宽越宽，其实这也是可以理解的，带宽利用率随着M的增大而逐渐变小，$\rho=\frac{2log_2M}M$。</p>
+<h2 id="Matlab仿真"><a href="#Matlab仿真" class="headerlink" title="Matlab仿真"></a>Matlab仿真</h2><h3 id="2ASK-2PSK"><a href="#2ASK-2PSK" class="headerlink" title="2ASK,2PSK"></a>2ASK,2PSK</h3><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%2ASK,2PSK</span></span><br><span class="line">clear all;</span><br><span class="line">close all;</span><br><span class="line"> </span><br><span class="line">A=<span class="number">1</span>;</span><br><span class="line">fc = <span class="number">2</span>;    <span class="comment">%2Hz;</span></span><br><span class="line">N_sample = <span class="number">8</span>; </span><br><span class="line">N = <span class="number">500</span>;    <span class="comment">%码元数</span></span><br><span class="line">Ts = <span class="number">1</span>;     <span class="comment">%1 baud/s</span></span><br><span class="line"> </span><br><span class="line">dt = Ts/fc/N_sample;  <span class="comment">%波形采样间隔</span></span><br><span class="line">t = <span class="number">0</span>:dt:N*Ts-dt;</span><br><span class="line">Lt = <span class="built_in">length</span>(t);</span><br><span class="line"> </span><br><span class="line"><span class="comment">%产生二进制信源</span></span><br><span class="line">d = <span class="built_in">sign</span>(<span class="built_in">randn</span>(<span class="number">1</span>,N));</span><br><span class="line">dd = sigexpand((d+<span class="number">1</span>)/<span class="number">2</span>,fc*N_sample);</span><br><span class="line">gt = <span class="built_in">ones</span>(<span class="number">1</span>,fc*N_sample); <span class="comment">%NRZ波形</span></span><br><span class="line"> </span><br><span class="line"><span class="built_in">figure</span>(<span class="number">1</span>)</span><br><span class="line">subplot(<span class="number">221</span>); <span class="comment">%输入NRZ信号波形(单极性）</span></span><br><span class="line">d_NRZ = conv(dd,gt);</span><br><span class="line"><span class="built_in">plot</span>(t,d_NRZ(<span class="number">1</span>:<span class="built_in">length</span>(t))); </span><br><span class="line">axis([<span class="number">0</span> <span class="number">10</span> <span class="number">0</span> <span class="number">1.2</span>]); ylabel(<span class="string">'输入信号'</span>);</span><br><span class="line"> </span><br><span class="line">subplot(<span class="number">222</span>); <span class="comment">%输入NRZ频谱</span></span><br><span class="line">[f,d_NRZf]=T2F( t,d_NRZ(<span class="number">1</span>:<span class="built_in">length</span>(t)) );</span><br><span class="line"><span class="built_in">plot</span>(f,<span class="number">10</span>*<span class="built_in">log10</span>(<span class="built_in">abs</span>(d_NRZf).^<span class="number">2</span>));</span><br><span class="line">axis([<span class="number">-2</span> <span class="number">2</span> <span class="number">-50</span> <span class="number">10</span>]);ylabel(<span class="string">'输入信号功率谱密度(dB/Hz)'</span>);</span><br><span class="line"> </span><br><span class="line"><span class="comment">%2ASK信号</span></span><br><span class="line">ht = A*<span class="built_in">cos</span>(<span class="number">2</span>*<span class="built_in">pi</span>*fc*t);</span><br><span class="line">s_2ask = d_NRZ(<span class="number">1</span>:Lt).*ht;</span><br><span class="line"> </span><br><span class="line">subplot(<span class="number">223</span>)</span><br><span class="line"><span class="built_in">plot</span>(t,s_2ask);</span><br><span class="line">axis([<span class="number">0</span> <span class="number">10</span> <span class="number">-1.2</span> <span class="number">1.2</span>]); ylabel(<span class="string">'2ASK'</span>);</span><br><span class="line"> </span><br><span class="line">[f,s_2askf]=T2F(t,s_2ask );</span><br><span class="line">subplot(<span class="number">224</span>)</span><br><span class="line"><span class="built_in">plot</span>(f,<span class="number">10</span>*<span class="built_in">log10</span>(<span class="built_in">abs</span>(s_2askf).^<span class="number">2</span>));</span><br><span class="line">axis([-fc<span class="number">-4</span> fc+<span class="number">4</span> <span class="number">-50</span> <span class="number">10</span>]);ylabel(<span class="string">'2ASK功率谱密度(dB/Hz)'</span>);</span><br><span class="line"> </span><br><span class="line"><span class="built_in">figure</span>(<span class="number">2</span>)</span><br><span class="line"><span class="comment">%2PSK信号</span></span><br><span class="line">d_2psk = <span class="number">2</span>*d_NRZ<span class="number">-1</span>;</span><br><span class="line">s_2psk = d_2psk(<span class="number">1</span>:Lt).*ht;</span><br><span class="line">subplot(<span class="number">221</span>)</span><br><span class="line"><span class="built_in">plot</span>(t,s_2psk);</span><br><span class="line">axis([<span class="number">0</span> <span class="number">10</span> <span class="number">-1.2</span> <span class="number">1.2</span>]); ylabel(<span class="string">'2PSK'</span>);</span><br><span class="line"> </span><br><span class="line">subplot(<span class="number">222</span>)</span><br><span class="line">[f,s_2pskf] = T2F(t,s_2psk);</span><br><span class="line"><span class="built_in">plot</span>( f,<span class="number">10</span>*<span class="built_in">log10</span>(<span class="built_in">abs</span>(s_2pskf).^<span class="number">2</span>) );</span><br><span class="line">axis([-fc<span class="number">-4</span> fc+<span class="number">4</span> <span class="number">-50</span> <span class="number">10</span>]);ylabel(<span class="string">'2PSK功率谱密度(dB/Hz)'</span>);</span><br><span class="line"> </span><br><span class="line"><span class="comment">% 2FSK</span></span><br><span class="line"><span class="comment">% s_2fsk = Acos(2*pi*fc*t + int(2*d_NRZ-1) );</span></span><br><span class="line"> sd_2fsk = <span class="number">2</span>*d_NRZ<span class="number">-1</span>;</span><br><span class="line"> </span><br><span class="line">s_2fsk = A*<span class="built_in">cos</span>(<span class="number">2</span>*<span class="built_in">pi</span>*fc*t + <span class="number">2</span>*<span class="built_in">pi</span>*sd_2fsk(<span class="number">1</span>:<span class="built_in">length</span>(t)).*t );</span><br><span class="line">subplot(<span class="number">223</span>)</span><br><span class="line"><span class="built_in">plot</span>(t,s_2fsk);</span><br><span class="line">axis([<span class="number">0</span> <span class="number">10</span> <span class="number">-1.2</span> <span class="number">1.2</span>]);xlabel(<span class="string">'t'</span>); ylabel(<span class="string">'2FSK'</span>)</span><br><span class="line">subplot(<span class="number">224</span>)</span><br><span class="line">[f,s_2fskf] = T2F(t,s_2fsk);</span><br><span class="line"><span class="built_in">plot</span>(f,<span class="number">10</span>*<span class="built_in">log10</span>(<span class="built_in">abs</span>(s_2fskf).^<span class="number">2</span>));</span><br><span class="line">axis([-fc<span class="number">-4</span> fc+<span class="number">4</span> <span class="number">-50</span> <span class="number">10</span>]);xlabel(<span class="string">'f'</span>);ylabel(<span class="string">'2FSK功率谱密度(dB/Hz)'</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/02/12/2-6-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E9%80%9A%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/1.png" alt="img"></p>
+<p><img src="/2020/02/12/2-6-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E9%80%9A%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/2.png" alt="img"></p>
+<h3 id="PSK星座图"><a href="#PSK星座图" class="headerlink" title="PSK星座图"></a>PSK星座图</h3><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% Use 16-PSK modulation.</span></span><br><span class="line">hMod = modem.pskmod(<span class="number">16</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Create a scatter plot</span></span><br><span class="line">scatterPlot = commscope.ScatterPlot(<span class="string">'SamplesPerSymbol'</span>,<span class="number">1</span>,<span class="string">'Constellation'</span>,hMod.Constellation);</span><br><span class="line"><span class="comment">% Show constellation</span></span><br><span class="line">scatterPlot.PlotSettings.Constellation = <span class="string">'on'</span>;</span><br><span class="line">scatterPlot.PlotSettings.ConstellationStyle = <span class="string">'rd'</span>;</span><br><span class="line"><span class="comment">% Add symbol labels</span></span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line">k=<span class="built_in">log2</span>(hMod.M);</span><br><span class="line"><span class="keyword">for</span> jj=<span class="number">1</span>:hMod.M</span><br><span class="line">        text(<span class="built_in">real</span>(hMod.Constellation(jj))<span class="number">-0.15</span>,...,</span><br><span class="line">        <span class="built_in">imag</span>(hMod.Constellation(jj))+<span class="number">0.15</span>,...</span><br><span class="line">        dec2base(hMod.SymbolMapping(jj),<span class="number">2</span>,k));</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="built_in">hold</span> off;</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/02/12/2-6-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E9%80%9A%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/3.png" alt="img"></p>
+<h3 id="QPSK-amp-OQPSK"><a href="#QPSK-amp-OQPSK" class="headerlink" title="QPSK&amp;OQPSK"></a>QPSK&amp;OQPSK</h3><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%QPSK &amp; OQPSK</span></span><br><span class="line">clear all;</span><br><span class="line">close all;</span><br><span class="line"> </span><br><span class="line">M = <span class="number">4</span>;</span><br><span class="line">Ts= <span class="number">1</span>;</span><br><span class="line">fc= <span class="number">10</span>;</span><br><span class="line">N_sample = <span class="number">16</span>;</span><br><span class="line">N_num = <span class="number">100</span>;</span><br><span class="line"> </span><br><span class="line">dt = <span class="number">1</span>/fc/N_sample;</span><br><span class="line">t = <span class="number">0</span>:dt:N_num*Ts-dt;</span><br><span class="line">T = dt*<span class="built_in">length</span>(t);</span><br><span class="line"> </span><br><span class="line">py1f = <span class="built_in">zeros</span>(<span class="number">1</span>,<span class="built_in">length</span>(t));    <span class="comment">%功率谱密度1</span></span><br><span class="line">py2f = <span class="built_in">zeros</span>(<span class="number">1</span>,<span class="built_in">length</span>(t));    <span class="comment">%功率谱密度2</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">for</span> PL=<span class="number">1</span>:<span class="number">100</span>   <span class="comment">%输入100段N_num个码字的波形，为了使功率谱密度看起来更加平滑，</span></span><br><span class="line">               <span class="comment">%可以取这100段信号功率谱密度的平均</span></span><br><span class="line">    d1 = <span class="built_in">sign</span>(<span class="built_in">randn</span>(<span class="number">1</span>,N_num));</span><br><span class="line">    d2 = <span class="built_in">sign</span>(<span class="built_in">randn</span>(<span class="number">1</span>,N_num));</span><br><span class="line">    gt = <span class="built_in">ones</span>(<span class="number">1</span>,fc*N_sample);</span><br><span class="line"> </span><br><span class="line">    <span class="comment">%QPSK调制</span></span><br><span class="line">    s1 = sigexpand(d1,fc*N_sample);</span><br><span class="line">    s2 = sigexpand(d2,fc*N_sample);</span><br><span class="line">    b1 = conv(s1,gt);</span><br><span class="line">    b2 = conv(s2,gt);</span><br><span class="line">    s1 = b1(<span class="number">1</span>:<span class="built_in">length</span>(s1));</span><br><span class="line">    s2 = b2(<span class="number">1</span>:<span class="built_in">length</span>(s2));</span><br><span class="line"> </span><br><span class="line">    st_qpsk = s1.*<span class="built_in">cos</span>(<span class="number">2</span>*<span class="built_in">pi</span>*fc*t) - s2.*<span class="built_in">sin</span>(<span class="number">2</span>*<span class="built_in">pi</span>*fc*t);</span><br><span class="line"> </span><br><span class="line">    s2_delay= [-<span class="built_in">ones</span>(<span class="number">1</span>,N_sample*fc/<span class="number">2</span>) s2(<span class="number">1</span>:<span class="keyword">end</span>-N_sample*fc/<span class="number">2</span>)];</span><br><span class="line">    st_oqpsk= s1.*<span class="built_in">cos</span>(<span class="number">2</span>*<span class="built_in">pi</span>*fc*t) - s2_delay.*<span class="built_in">sin</span>(<span class="number">2</span>*<span class="built_in">pi</span>*fc*t);</span><br><span class="line"> </span><br><span class="line">    <span class="comment">%经过带通后，再经过非线性电路</span></span><br><span class="line">    [f y1f] = T2F(t,st_qpsk);</span><br><span class="line">    [f y2f] = T2F(t,st_oqpsk);</span><br><span class="line">    [t y1] = bpf(f,y1f,fc<span class="number">-1</span>/Ts,fc+<span class="number">1</span>/Ts);</span><br><span class="line">    [t y2] = bpf(f,y2f,fc<span class="number">-1</span>/Ts,fc+<span class="number">1</span>/Ts);</span><br><span class="line">    subplot(<span class="number">221</span>);</span><br><span class="line">    <span class="built_in">plot</span>(t,y1); xlabel(<span class="string">'t'</span>); ylabel(<span class="string">'QPSK波形'</span>);</span><br><span class="line">    axis([<span class="number">5</span> <span class="number">15</span> <span class="number">-1.6</span> <span class="number">1.6</span>]);title(<span class="string">'经过带通后的波形'</span>);</span><br><span class="line"> </span><br><span class="line">    subplot(<span class="number">222</span>)</span><br><span class="line">    <span class="built_in">plot</span>(t,y2); xlabel(<span class="string">'t'</span>); ylabel(<span class="string">'OQPSK波形'</span>);</span><br><span class="line">    axis([<span class="number">5</span> <span class="number">15</span> <span class="number">-1.6</span> <span class="number">1.6</span>]);title(<span class="string">'经过带通后的波形'</span>);</span><br><span class="line"> </span><br><span class="line">    <span class="comment">%经过非线性电路</span></span><br><span class="line">    y1 = <span class="number">1.5</span>*<span class="built_in">tanh</span>(<span class="number">2</span>*y1);</span><br><span class="line">    y2 = <span class="number">1.5</span>*<span class="built_in">tanh</span>(<span class="number">2</span>*y2);</span><br><span class="line">    [f y1f] = T2F(t,y1);</span><br><span class="line">    [f y2f] = T2F(t,y2);</span><br><span class="line">    py1f = py1f + <span class="built_in">abs</span>(y1f).^<span class="number">2</span>/T;     <span class="comment">%QPSK不同段信号功率谱密度相加</span></span><br><span class="line">    py2f = py2f + <span class="built_in">abs</span>(y2f).^<span class="number">2</span>/T;     <span class="comment">%OQPSK不同段信号功率谱密度相加</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">py1f = py1f/<span class="number">100</span>;                     <span class="comment">%QPSK 100段功率谱密度平均</span></span><br><span class="line">py2f=py2f/<span class="number">100</span>;                       <span class="comment">%OQPSK 100段功率谱密度平均</span></span><br><span class="line">   </span><br><span class="line">subplot(<span class="number">223</span>);</span><br><span class="line"><span class="built_in">plot</span>(f,<span class="number">10</span>*<span class="built_in">log10</span>(py1f)); xlabel(<span class="string">'f'</span>);ylabel(<span class="string">'QPSK功率谱密度(dB/Hz)'</span>);</span><br><span class="line">title(<span class="string">'经过非线性电路后的功率谱密度'</span>);axis([ <span class="number">-15</span> <span class="number">15</span> <span class="number">-30</span> <span class="number">10</span>]);</span><br><span class="line"> </span><br><span class="line">subplot(<span class="number">224</span>)</span><br><span class="line"><span class="built_in">plot</span>(f,<span class="number">10</span>*<span class="built_in">log10</span>(py2f));xlabel(<span class="string">'f'</span>);ylabel(<span class="string">'OQPSK功率谱密度(dB/Hz)'</span>);</span><br><span class="line">title(<span class="string">'经过非线性电路后的功率谱密度'</span>);axis([ <span class="number">-15</span> <span class="number">15</span> <span class="number">-30</span> <span class="number">10</span>]);</span><br><span class="line"> </span><br><span class="line"><span class="built_in">figure</span>(<span class="number">2</span>)</span><br><span class="line">x = <span class="number">-2</span>:<span class="number">0.1</span>:<span class="number">2</span>;</span><br><span class="line">y=<span class="number">1.5</span>*<span class="built_in">tanh</span>(<span class="number">2</span>*x);</span><br><span class="line"><span class="built_in">plot</span>(x,y); title(<span class="string">'非线性电路的输入输出函数'</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/02/12/2-6-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E9%80%9A%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/4.png" alt="img"></p>
+<p><img src="/2020/02/12/2-6-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E9%80%9A%E5%B8%A6%E8%84%89%E5%86%B2%E4%BC%A0%E8%BE%93/5.png" alt="img"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86/" rel="tag"># 通信原理</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/12/2-5-1%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E4%BF%A1%E5%8F%B7%E7%A9%BA%E9%97%B4/" rel="prev" title="通信原理（五）——信号空间">
+      <i class="fa fa-chevron-left"></i> 通信原理（五）——信号空间
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#知识总结"><span class="nav-number">1.</span> <span class="nav-text">知识总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分析通带数据传输的方法"><span class="nav-number">1.1.</span> <span class="nav-text">分析通带数据传输的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相干PSK"><span class="nav-number">1.2.</span> <span class="nav-text">相干PSK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#M进制QAM"><span class="nav-number">1.3.</span> <span class="nav-text">M进制QAM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相干FSK"><span class="nav-number">1.4.</span> <span class="nav-text">相干FSK</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Matlab仿真"><span class="nav-number">2.</span> <span class="nav-text">Matlab仿真</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2ASK-2PSK"><span class="nav-number">2.1.</span> <span class="nav-text">2ASK,2PSK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PSK星座图"><span class="nav-number">2.2.</span> <span class="nav-text">PSK星座图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#QPSK-amp-OQPSK"><span class="nav-number">2.3.</span> <span class="nav-text">QPSK&amp;OQPSK</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">KZB</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KZB</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
+  </div>
+
+        
+
+
+
+
+
+
+  <script>
+  function leancloudSelector(url) {
+    url = encodeURI(url);
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.getAttribute('id'));
+      var title = visitors.getAttribute('data-flag-title');
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .then(() => {
+                leancloudSelector(url).innerText = counter.time + 1;
+              })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              })
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.getAttribute('id'));
+      });
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
+            });
+            return;
+          }
+          for (let item of results) {
+            let { url, time } = item;
+            leancloudSelector(url).innerText = time;
+          }
+          for (let url of entries) {
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=ixgE0yG1deHygJlpEDqkAGOt-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method: method,
+          headers: {
+            'X-LC-Id': 'ixgE0yG1deHygJlpEDqkAGOt-gzGzoHsz',
+            'X-LC-Key': 'TS4uwvYCAbS55vb76aWCjgX1',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>
